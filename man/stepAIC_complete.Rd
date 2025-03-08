@@ -37,4 +37,8 @@ glm(am ~ ., family = binomial, data = mtc) |> stepAIC_complete() |> suppressWarn
 library(MASS)
 glm.nb(Days ~ ., data = quine) |> stepAIC_complete()
 
+library(ordinal)
+clm(rating ~ temp * contact, data = ordinal::wine) |>
+ stepAIC_complete()
+
 }

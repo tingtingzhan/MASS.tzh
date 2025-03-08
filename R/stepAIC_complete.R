@@ -31,6 +31,10 @@
 #' library(MASS)
 #' glm.nb(Days ~ ., data = quine) |> stepAIC_complete()
 #' 
+#' library(ordinal)
+#' clm(rating ~ temp * contact, data = ordinal::wine) |>
+#'  stepAIC_complete()
+#' 
 #' @importFrom MASS stepAIC
 #' @importFrom stats complete.cases terms
 #' @export
