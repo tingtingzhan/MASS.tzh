@@ -1,0 +1,17 @@
+Package: MASS.tzh
+Type: Package
+Title: MASS.tzh
+Version: 0.1.0
+Date: 2024-09-10
+Description: Need to think more..
+Authors@R: c(person(given = 'Tingting', family = 'Zhan',
+      role = c('aut', 'cre'), email =
+      'tingtingzhan@gmail.com', comment = c(ORCID =
+      '0000-0001-9971-4844')))
+Language: en-US
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Encoding: UTF-8
+License: GPL-2
+Depends: R (>= 4.4), MASS
+Imports: AER, sfsmisc
