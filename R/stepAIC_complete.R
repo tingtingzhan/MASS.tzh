@@ -110,7 +110,7 @@ stepAIC_complete <- function(
 Sprintf.stepAIC <- function(x) {
   
   old_lab_ <- x |> attr(which = 'old_terms', exact = TRUE) |> attr(which = 'term.labels', exact = TRUE)
-  old_lab <- paste0('`', old_lab, '`', collapse = ', ')
+  old_lab <- paste0('`', old_lab_, '`', collapse = ', ')
   
   if (length(upper <- attr(x, which = 'upper', exact = TRUE))) {
     return(sprintf(
