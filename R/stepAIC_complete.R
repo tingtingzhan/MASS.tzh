@@ -2,9 +2,23 @@
 
 #' @title Perform \link[MASS]{stepAIC} on Complete Data
 #' 
-#' @description ..
+#' @description 
+#' Perform \link[MASS]{stepAIC} on complete data, and \link[stats]{update} the return with full data.
 #' 
 #' @param object a regression model
+#' 
+#' @param lower \link[stats]{formula} of the lower `scope` (see function \link[MASS]{stepAIC}),
+#' default `~1` indicating an intercept-only minimum model in a **downward** selection.
+#' 
+#' @param upper \link[stats]{formula} of **additional** predictors of the upper `scope` (see function \link[MASS]{stepAIC})
+#' of a **forward** selection.
+#' If parameter `upper` is provided, then parameter `lower` is ignored.
+#' 
+#' @param ... additional parameters not in use
+#' 
+#' @details
+#' Read section **Note** of function \link[MASS]{stepAIC} documentation.
+#' 
 #' 
 #' @note
 #' \link[MASS]{stepAIC} (as of 2025-02-19) ??? does not have a parameter for the end user to specify the
@@ -12,63 +26,76 @@
 #' Instead, this quantity is hard coded (in `if (bAIC >= AIC + 1e-07) break`).
 #' 
 #' @examples 
-#' stk = stackloss
-#' stk[2L, 'Air.Flow'] = stk[5L, 'Water.Temp'] = 
-#'   stk[16L, 'Acid.Conc.'] = stk[21L, 'stack.loss'] = NA
-#' 
-#' lm(stack.loss ~ ., data = stk) |> stepAIC_complete() |> summary()
-#' lm(stack.loss ~ Air.Flow, data = stk) |> stepAIC_complete() |> summary()
-#' 
-#' mtc = mtcars |> within.data.frame(expr = {
-#'  cyl = factor(cyl)
-#'  gear = factor(gear)
-#'  vs = as.logical(vs)
-#'  am = as.logical(am)
-#' })
-#' glm(am ~ hp + wt + vs, data = mtc, family = binomial) |> stepAIC_complete()
-#' glm(am ~ ., family = binomial, data = mtc) |> stepAIC_complete() |> suppressWarnings()
-#' 
-#' library(MASS)
-#' glm.nb(Days ~ ., data = quine) |> stepAIC_complete()
-#' 
-#' library(ordinal)
-#' clm(rating ~ temp * contact, data = ordinal::wine) |>
-#'  stepAIC_complete()
+#' sapply(airquality, FUN = function(i) mean(is.na(i))) # missingness in `Ozone` and `Solar.R`
+#' summary(m <- lm(Temp ~ Ozone + Solar.R + Wind, data = airquality))
+#' tryCatch(m |> stepAIC(trace = FALSE), error = identity)
+#' m |> stepAIC_complete() |> summary()
+#' plot(Temp ~ Ozone, data = airquality)
 #' 
 #' @importFrom MASS stepAIC
-#' @importFrom stats complete.cases terms
+#' @importFrom stats complete.cases terms update update.formula
 #' @export
-stepAIC_complete <- function(object) {
+stepAIC_complete <- function(
+    object,
+    lower = ~ 1,
+    upper,
+    ...
+) {
   
-  trms0 <- terms(object)
-  if (any(trms0[[3L]] == c('0', '1'))) return(object) # input model contains at most an intercept term
+  #message('global stepAIC_complete') # dev-mode
+  
+  old_trm <- object |> terms()
+  old_v <- old_trm |> attr(which = 'variables', exact = TRUE) |> as.list.default()
+  if (length(old_v) == 2L) return(object) # term variables `list(edp)`; input model contains at most an intercept term
   
   datacall <- object$call$data
-  data <- eval(datacall)
+  data <- eval(datacall) # let err
   
-  yok <- complete.cases(data[intersect(names(data), all.vars(trms0[[2L]]))])
-  all_ok <- complete.cases(data[intersect(names(data), all.vars(trms0))])
-  if (n_rm <- sum(yok & !all_ok)) cat(sprintf(fmt = 'Backward selection (%d subjects with missingness removed)\n\n', n_rm))
+  # backward-only or backward-forward
+  # yok <- complete.cases(data[intersect(names(data), all.vars(old_trm[[2L]]))]) # no longer used
   
-  # tested on returned object from
-  # ?stats::lm
-  # ?stats::glm
-  # ?survival::coxph
-  object$call$data <- if (inherits(object, what = c('coxph', 'negbin', 'clm', 'logistf'))) {
-    data[all_ok, , drop = FALSE] # a 'data.frame', these object must
-  } else quote(data[all_ok, , drop = FALSE]) # output cleaner :)
-  ret0 <- stepAIC(object, direction = 'backward', trace = 0L)
+  # always perform backward-selection
   
-  if (any(terms(ret0)[[3L]] == c('0', '1'))) cat('All variables removed by backward selection algorithm!\n')
+  back_ok <- complete.cases(data[intersect(names(data), all.vars(old_trm))])
+  back <- object |> 
+    update(data = data[back_ok, , drop = FALSE]) |>
+    stepAIC(direction = 'backward', trace = 0L)
   
-  # ret <- eval(call(name = 'update', quote(ret0), data = datacall)) # sometimes error!
-  # ret <- eval(call(name = 'update', quote(ret0), data = data)) # maybe this works, but I don't care anyway :)
-  cl <- ret0$call
-  cl$data <- datacall
-  # cl$data <- data # NO!! output carries the articulation of `data` ..
-  #ret <- eval(cl) # sometimes error!!
-  ret <- eval(parse(text = deparse1(cl))) # this way it works ...
-  attr(ret, which = 'old_terms') <- trms0
+  if (missing(upper)) {
+    
+    ret0 <- back 
+    
+  } else { # forward selection
+    
+    upper_scope <- back |>
+      terms() |> 
+      update.formula(new = call(name = '~', quote(.), call(name = '+', upper[[2L]], quote(.))))
+    
+    forw_ok <- complete.cases(data[intersect(names(data), all.vars(upper_scope))])
+    .forw_data <- data[forw_ok, , drop = FALSE]
+    
+    # stepAIC(direction = 'forward') -> ?stats::add1
+    # requires `data` in `.GlobalEnv` !!  Even ?base::new.env does not work!!
+    # `assignments to the global environment` is a NOTE of R check
+    if (exists('.forw_data', envir = .GlobalEnv)) stop('remove existing `.forw_data` from .GlobalEnv')
+    assign(x = '.forw_data', value = .forw_data, envir = .GlobalEnv)
+    ret0 <- back |> 
+      update(data = .forw_data) |> # I dont care about `$call` in intermediate step(s)
+      stepAIC(direction = 'forward', scope = list(upper = upper_scope), trace = 0L)
+    rm(list = '.forw_data', envir = .GlobalEnv)
+    
+  }
+  
+  ret <- ret0 |>
+    update(data = data)
+  ret$call$data <- datacall # silly but works!
+  
+  new_v <- ret |> terms() |> attr(which = 'variables', exact = TRUE) |> as.list.default()
+  if (length(new_v) == 2L) cat('All variables removed by backward selection algorithm!\n')
+  
+  attr(ret, which = 'old_terms') <- old_trm
+  attr(ret, which = 'lower') <- lower
+  attr(ret, which = 'upper') <- if (!missing(upper)) upper # else NULL
   return(ret)
   
 }

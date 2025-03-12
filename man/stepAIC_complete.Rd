@@ -4,13 +4,25 @@
 \alias{stepAIC_complete}
 \title{Perform \link[MASS]{stepAIC} on Complete Data}
 \usage{
-stepAIC_complete(object)
+stepAIC_complete(object, lower = ~1, upper, ...)
 }
 \arguments{
 \item{object}{a regression model}
+
+\item{lower}{\link[stats]{formula} of the lower \code{scope} (see function \link[MASS]{stepAIC}),
+default \code{~1} indicating an intercept-only minimum model in a \strong{downward} selection.}
+
+\item{upper}{\link[stats]{formula} of \strong{additional} predictors of the upper \code{scope} (see function \link[MASS]{stepAIC})
+of a \strong{forward} selection.
+If parameter \code{upper} is provided, then parameter \code{lower} is ignored.}
+
+\item{...}{additional parameters not in use}
 }
 \description{
-..
+Perform \link[MASS]{stepAIC} on complete data, and \link[stats]{update} the return with full data.
+}
+\details{
+Read section \strong{Note} of function \link[MASS]{stepAIC} documentation.
 }
 \note{
 \link[MASS]{stepAIC} (as of 2025-02-19) ??? does not have a parameter for the end user to specify the
@@ -18,27 +30,10 @@ threshold of AIC improvement, that should be regarded as an improvement.
 Instead, this quantity is hard coded (in \code{if (bAIC >= AIC + 1e-07) break}).
 }
 \examples{
-stk = stackloss
-stk[2L, 'Air.Flow'] = stk[5L, 'Water.Temp'] = 
-  stk[16L, 'Acid.Conc.'] = stk[21L, 'stack.loss'] = NA
-
-lm(stack.loss ~ ., data = stk) |> stepAIC_complete() |> summary()
-lm(stack.loss ~ Air.Flow, data = stk) |> stepAIC_complete() |> summary()
-
-mtc = mtcars |> within.data.frame(expr = {
- cyl = factor(cyl)
- gear = factor(gear)
- vs = as.logical(vs)
- am = as.logical(am)
-})
-glm(am ~ hp + wt + vs, data = mtc, family = binomial) |> stepAIC_complete()
-glm(am ~ ., family = binomial, data = mtc) |> stepAIC_complete() |> suppressWarnings()
-
-library(MASS)
-glm.nb(Days ~ ., data = quine) |> stepAIC_complete()
-
-library(ordinal)
-clm(rating ~ temp * contact, data = ordinal::wine) |>
- stepAIC_complete()
+sapply(airquality, FUN = function(i) mean(is.na(i))) # missingness in `Ozone` and `Solar.R`
+summary(m <- lm(Temp ~ Ozone + Solar.R + Wind, data = airquality))
+tryCatch(m |> stepAIC(trace = FALSE), error = identity)
+m |> stepAIC_complete() |> summary()
+plot(Temp ~ Ozone, data = airquality)
 
 }
