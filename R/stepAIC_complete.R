@@ -117,13 +117,13 @@ stepAIC_complete <- function(
   
   if (length(upper <- attr(x, which = 'upper', exact = TRUE))) {
     return(sprintf(
-      fmt = 'Forward-backward stepwise variable selection for the multivariable model by Akaike information criterion (AIC) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>. Initial model starts with predictor(s) %s, backward selection first, then forward selection with additional predictor(s) %s.',
+      fmt = 'Forward-backward stepwise variable selection by Akaike information criterion (AIC) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>. Initial model starts with predictor(s) %s, backward selection first, then forward selection with additional predictor(s) %s.',
       old_lab,
-      paste0('`', upper[[2L]], '`', collapse = ', ')
+      paste0('`', all.vars(upper[[2L]]), '`', collapse = ', ')
     ))
   } else {
     return(sprintf(
-      fmt = 'Backward stepwise variable selection for the multivariable model by Akaike information criterion (AIC) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>, from candidate predictor(s) %s.',
+      fmt = 'Backward stepwise variable selection by Akaike information criterion (AIC) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>, from candidate predictor(s) %s.',
       old_lab
     ))
   }
