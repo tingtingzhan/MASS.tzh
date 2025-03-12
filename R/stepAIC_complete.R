@@ -96,6 +96,7 @@ stepAIC_complete <- function(
   attr(ret, which = 'old_terms') <- old_trm
   attr(ret, which = 'lower') <- lower
   attr(ret, which = 'upper') <- if (!missing(upper)) upper # else NULL
+  class(ret) <- c('stepAIC', class(ret))
   return(ret)
   
 }
