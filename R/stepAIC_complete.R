@@ -102,12 +102,15 @@ stepAIC_complete <- function(
 }
 
 
-#' @title Sprintf.stepAIC
+#' @title .Sprintf.stepAIC
 #' 
 #' @param x returned object of [stepAIC_complete()]
 #' 
+#' @note
+#' Do not make this S3!  This is to be appended to `Sprintf.default()`
+#' 
 #' @export
-Sprintf.stepAIC <- function(x) {
+.Sprintf.stepAIC <- function(x) {
   
   old_lab_ <- x |> attr(which = 'old_terms', exact = TRUE) |> attr(which = 'term.labels', exact = TRUE)
   old_lab <- paste0('`', old_lab_, '`', collapse = ', ')
