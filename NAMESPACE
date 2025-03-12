@@ -3,6 +3,7 @@
 export(.pval.rlm)
 export(.pval.summary.polr)
 export(.pval.summary.rlm)
+export(Sprintf.stepAIC)
 export(check_over_dispersion)
 export(desc_.polr)
 export(desc_.rlm)
