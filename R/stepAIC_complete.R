@@ -84,6 +84,16 @@ stepAIC_complete <- function(
       stepAIC(direction = 'forward', scope = list(upper = upper_scope), trace = 0L)
     rm(list = '.forw_data', envir = .GlobalEnv)
     
+    #env <- new.env()
+    #assign(x = '.forw_data', value = .forw_data, envir = env)
+    #cl <- quote(expr = {
+    #  back |> 
+    #  update(data = .forw_data) |> # I dont care about `$call` in intermediate step(s)
+    #  stepAIC(direction = 'forward', scope = list(upper = upper_scope), trace = 0L)
+    #})
+    #ret0 <- eval(cl, envir = env) # does not work!!!
+    #rm(env)
+    
   }
   
   ret <- ret0 |>
@@ -96,10 +106,14 @@ stepAIC_complete <- function(
   attr(ret, which = 'old_terms') <- old_trm
   attr(ret, which = 'lower') <- lower
   attr(ret, which = 'upper') <- if (!missing(upper)) upper # else NULL
+  attr(ret, which = 'model.start') <- object
+  attr(ret, which = 'model.backward') <- if (!missing(upper)) back # else NULL
   class(ret) <- c('stepAIC', class(ret))
   return(ret)
   
 }
+
+
 
 
 #' @title .Sprintf.stepAIC
