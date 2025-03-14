@@ -54,20 +54,22 @@ stepAIC_complete <- function(
   # backward-only or backward-forward
   # yok <- complete.cases(data[intersect(names(data), all.vars(old_trm[[2L]]))]) # no longer used
   
-  # always perform backward-selection
+  ########## backward-selection
   
   back_ok <- complete.cases(data[intersect(names(data), all.vars(old_trm))])
-  back <- object |> 
+  backward <- object |> 
     update(data = data[back_ok, , drop = FALSE]) |>
-    stepAIC(direction = 'backward', trace = 0L)
+    stepAIC(direction = 'backward', trace = 0L) |>
+    update(data = data)
+  backward$call$data <- datacall # silly but works!
+  new_v <- backward |> terms() |> attr(which = 'variables', exact = TRUE) |> as.list.default()
+  if (length(new_v) == 2L) cat('All variables removed by backward selection algorithm!\n')
   
-  if (missing(upper)) {
+  if (!missing(upper)) {
     
-    ret0 <- back 
+    ########## forward-selection
     
-  } else { # forward selection
-    
-    upper_scope <- back |>
+    upper_scope <- backward |>
       terms() |> 
       update.formula(new = call(name = '~', quote(.), call(name = '+', upper[[2L]], quote(.))))
     
@@ -79,36 +81,34 @@ stepAIC_complete <- function(
     # `assignments to the global environment` is a NOTE of R check
     if (exists('.forw_data', envir = .GlobalEnv)) stop('remove existing `.forw_data` from .GlobalEnv')
     assign(x = '.forw_data', value = .forw_data, envir = .GlobalEnv)
-    ret0 <- back |> 
+    forward <- backward |> 
       update(data = .forw_data) |> # I dont care about `$call` in intermediate step(s)
-      stepAIC(direction = 'forward', scope = list(upper = upper_scope), trace = 0L)
+      stepAIC(direction = 'forward', scope = list(upper = upper_scope), trace = 0L) |>
+      update(data = data)
     rm(list = '.forw_data', envir = .GlobalEnv)
+    forward$call$data <- datacall # silly but works!
     
     #env <- new.env()
     #assign(x = '.forw_data', value = .forw_data, envir = env)
     #cl <- quote(expr = {
-    #  back |> 
-    #  update(data = .forw_data) |> # I dont care about `$call` in intermediate step(s)
+    #  backward |> 
+    #  update(data = .forw_data) |>
     #  stepAIC(direction = 'forward', scope = list(upper = upper_scope), trace = 0L)
     #})
-    #ret0 <- eval(cl, envir = env) # does not work!!!
+    #eval(cl, envir = env) # does not work!!!
     #rm(env)
     
-  }
-  
-  ret <- ret0 |>
-    update(data = data)
-  ret$call$data <- datacall # silly but works!
-  
-  new_v <- ret |> terms() |> attr(which = 'variables', exact = TRUE) |> as.list.default()
-  if (length(new_v) == 2L) cat('All variables removed by backward selection algorithm!\n')
-  
-  attr(ret, which = 'old_terms') <- old_trm
+  } # else do nothing
+
+  # attr(ret1, which = 'old_terms') <- old_trm # deprecated!!!!!
+  ret <- list(
+    Initial = object,
+    Backward = backward,
+    Forward = if (!missing(upper)) forward # else NULL
+  )
   attr(ret, which = 'lower') <- lower
   attr(ret, which = 'upper') <- if (!missing(upper)) upper # else NULL
-  attr(ret, which = 'model.start') <- object
-  attr(ret, which = 'model.backward') <- if (!missing(upper)) back # else NULL
-  class(ret) <- c('stepAIC', class(ret))
+  class(ret) <- c('stepAIC', 'listof')
   return(ret)
   
 }
@@ -125,22 +125,9 @@ stepAIC_complete <- function(
 #' 
 #' @export
 .Sprintf.stepAIC <- function(x) {
-  
-  old_lab_ <- x |> attr(which = 'old_terms', exact = TRUE) |> attr(which = 'term.labels', exact = TRUE)
-  old_lab <- paste0('`', old_lab_, '`', collapse = ', ')
-  
-  if (length(upper <- attr(x, which = 'upper', exact = TRUE))) {
-    return(sprintf(
-      fmt = 'Forward-backward stepwise variable selection by Akaike information criterion (AIC) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>. Initial model starts with predictor(s) %s, backward selection first, then forward selection with additional predictor(s) %s.',
-      old_lab,
-      paste0('`', all.vars(upper[[2L]]), '`', collapse = ', ')
-    ))
-  } else {
-    return(sprintf(
-      fmt = 'Backward stepwise variable selection by Akaike information criterion (AIC) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>, from candidate predictor(s) %s.',
-      old_lab
-    ))
-  }
-  
+  sprintf(fmt = '%s stepwise variable selection by Akaike information criterion (AIC) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>.',
+          if (length(upper <- attr(x, which = 'upper', exact = TRUE))) {
+            'Backward-forward'
+          } else 'Backward')
 }
 
