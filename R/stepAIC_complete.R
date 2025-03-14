@@ -103,8 +103,8 @@ stepAIC_complete <- function(
   # attr(ret1, which = 'old_terms') <- old_trm # deprecated!!!!!
   ret <- list(
     Initial = object,
-    Backward = backward,
-    Forward = if (!missing(upper)) forward # else NULL
+    'Backward Stepwise' = backward,
+    'Forward Stepwise' = if (!missing(upper)) forward # else NULL
   )
   ret <- ret[lengths(ret, use.names = FALSE) > 0L]
   attr(ret, which = 'lower') <- lower
