@@ -126,9 +126,21 @@ stepAIC_complete <- function(
 #' 
 #' @export
 .Sprintf.stepAIC <- function(x) {
-  sprintf(fmt = '%s stepwise variable selection by Akaike information criterion (AIC) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>.',
-          if (length(upper <- attr(x, which = 'upper', exact = TRUE))) {
-            'Backward-forward'
-          } else 'Backward')
+  
+  upper <- x |> attr(which = 'upper', exact = TRUE)
+  
+  txt1 <- sprintf(
+    fmt = '%s stepwise variable selection by Akaike information criterion (AIC) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>.',
+    if (length(upper)) {
+      'Backward-forward'
+    } else 'Backward')
+  
+  txt2 <- if (length(upper)) sprintf(
+    fmt = 'Predictor(s) considered in forward stepwise selection were %s.',
+    paste0('`', all.vars(upper[[2L]]), '`', collapse = ', ')
+  ) # else MULL
+  
+  paste(txt1, txt2)
+  
 }
 
