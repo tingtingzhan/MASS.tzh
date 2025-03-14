@@ -106,6 +106,7 @@ stepAIC_complete <- function(
     Backward = backward,
     Forward = if (!missing(upper)) forward # else NULL
   )
+  ret <- ret[lengths(ret, use.names = FALSE) > 0L]
   attr(ret, which = 'lower') <- lower
   attr(ret, which = 'upper') <- if (!missing(upper)) upper # else NULL
   class(ret) <- c('stepAIC', 'listof')
