@@ -129,14 +129,21 @@ stepAIC_complete <- function(
   
   upper <- x |> attr(which = 'upper', exact = TRUE)
   
+  tmp <- x[[1L]] |> 
+    terms() |> 
+    attr(which = 'variables', exact = TRUE) |> 
+    as.list.default() |>
+    vapply(FUN = deparse1, FUN.VALUE = '')
+    
   txt1 <- sprintf(
-    fmt = '%s stepwise variable selection by Akaike information criterion (AIC) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>.',
+    fmt = '%s stepwise variable selection by [Akaike information criterion (AIC)](https://en.wikipedia.org/wiki/Akaike_information_criterion) was performed using <u>**`R`**</u> package <u>**`MASS`**</u>. Initial model started with predictors %s, followed by a backward stepwise variable selection.',
     if (length(upper)) {
       'Backward-forward'
-    } else 'Backward')
+    } else 'Backward',
+    paste0('`', tmp[-(1:2)], '`', collapse = ', '))
   
   txt2 <- if (length(upper)) sprintf(
-    fmt = 'Predictor(s) considered in forward stepwise selection were %s.',
+    fmt = 'Additional predictor(s) considered in the subsequent forward stepwise selection were %s.',
     paste0('`', all.vars(upper[[2L]]), '`', collapse = ', ')
   ) # else MULL
   
