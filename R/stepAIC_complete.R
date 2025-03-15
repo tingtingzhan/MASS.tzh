@@ -29,9 +29,9 @@
 #' sapply(airquality, FUN = function(i) mean(is.na(i))) # missingness in `Ozone` and `Solar.R`
 #' summary(m <- lm(Temp ~ Ozone + Solar.R + Wind, data = airquality))
 #' tryCatch(m |> stepAIC(trace = FALSE), error = identity)
-#' m |> stepAIC_complete() |> summary()
-#' plot(Temp ~ Ozone, data = airquality)
-#' 
+#' m |> stepAIC_complete()
+#' lm(Temp ~ Solar.R + Wind, data = airquality) |>
+#'  stepAIC_complete(upper = ~ Ozone) # not necessarily the same!
 #' @importFrom MASS stepAIC
 #' @importFrom stats complete.cases terms update update.formula
 #' @export
@@ -42,17 +42,12 @@ stepAIC_complete <- function(
     ...
 ) {
   
-  #message('global stepAIC_complete') # dev-mode
-  
   trm <- object |> terms()
   old_v <- trm |> attr(which = 'variables', exact = TRUE) |> as.list.default()
   if (length(old_v) == 2L) return(object) # term variables `list(edp)`; input model contains at most an intercept term
   
   datacall <- object$call$data
   data <- eval(datacall) # let err
-  
-  # backward-only or backward-forward
-  # yok <- complete.cases(data[intersect(names(data), all.vars(trm[[2L]]))]) # no longer used
   
   ########## backward-selection
   

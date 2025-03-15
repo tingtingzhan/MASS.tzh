@@ -33,7 +33,7 @@ Instead, this quantity is hard coded (in \code{if (bAIC >= AIC + 1e-07) break}).
 sapply(airquality, FUN = function(i) mean(is.na(i))) # missingness in `Ozone` and `Solar.R`
 summary(m <- lm(Temp ~ Ozone + Solar.R + Wind, data = airquality))
 tryCatch(m |> stepAIC(trace = FALSE), error = identity)
-m |> stepAIC_complete() |> summary()
-plot(Temp ~ Ozone, data = airquality)
-
+m |> stepAIC_complete()
+lm(Temp ~ Solar.R + Wind, data = airquality) |>
+ stepAIC_complete(upper = ~ Ozone) # not necessarily the same!
 }
