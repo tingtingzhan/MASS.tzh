@@ -44,19 +44,19 @@ stepAIC_complete <- function(
   
   #message('global stepAIC_complete') # dev-mode
   
-  old_trm <- object |> terms()
-  old_v <- old_trm |> attr(which = 'variables', exact = TRUE) |> as.list.default()
+  trm <- object |> terms()
+  old_v <- trm |> attr(which = 'variables', exact = TRUE) |> as.list.default()
   if (length(old_v) == 2L) return(object) # term variables `list(edp)`; input model contains at most an intercept term
   
   datacall <- object$call$data
   data <- eval(datacall) # let err
   
   # backward-only or backward-forward
-  # yok <- complete.cases(data[intersect(names(data), all.vars(old_trm[[2L]]))]) # no longer used
+  # yok <- complete.cases(data[intersect(names(data), all.vars(trm[[2L]]))]) # no longer used
   
   ########## backward-selection
   
-  back_ok <- complete.cases(data[intersect(names(data), all.vars(old_trm))])
+  back_ok <- complete.cases(data[intersect(names(data), all.vars(trm))])
   backward <- object |> 
     update(data = data[back_ok, , drop = FALSE]) |>
     stepAIC(direction = 'backward', trace = 0L) |>
@@ -100,7 +100,6 @@ stepAIC_complete <- function(
     
   } # else do nothing
 
-  # attr(ret1, which = 'old_terms') <- old_trm # deprecated!!!!!
   ret <- list(
     Initial = object,
     'Backward Stepwise' = backward,
