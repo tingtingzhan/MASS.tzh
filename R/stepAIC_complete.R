@@ -21,9 +21,11 @@
 #' 
 #' 
 #' @note
-#' \link[MASS]{stepAIC} (as of 2025-02-19) ??? does not have a parameter for the end user to specify the
+#' Function \link[MASS]{stepAIC} (as of 2025-02-19) ??? does not have a parameter for the end user to specify the
 #' threshold of AIC improvement, that should be regarded as an improvement.
 #' Instead, this quantity is hard coded (in `if (bAIC >= AIC + 1e-07) break`).
+#' 
+#' Function \link[MASS]{stepAIC} (as of 2025-02-19) is hard coded for S3 regression object (e.g., `object$formula <- Terms`).
 #' 
 #' @examples 
 #' sapply(airquality, FUN = function(i) mean(is.na(i))) # missingness in `Ozone` and `Solar.R`
@@ -32,6 +34,11 @@
 #' m |> stepAIC_complete()
 #' lm(Temp ~ Solar.R + Wind, data = airquality) |>
 #'  stepAIC_complete(upper = ~ Ozone) # not necessarily the same!
+#'  
+#' library(lme4); library(HSAUR3)
+#' ?lme4::glmer
+#' gm2 = glmer(outcome ~ treatment*visit + (1|patientID), data=toenail, family=binomial,nAGQ=20)
+#' gm2 |> stepAIC_complete()
 #' @importFrom MASS stepAIC
 #' @importFrom stats complete.cases terms update update.formula
 #' @export
@@ -46,21 +53,30 @@ stepAIC_complete <- function(
   old_v <- trm |> attr(which = 'variables', exact = TRUE) |> as.list.default()
   if (length(old_v) == 2L) return(object) # term variables `list(edp)`; input model contains at most an intercept term
   
-  datacall <- object$call$data
+  cl <- getElement(object, name = 'call') # `object` could be S4
+  datacall <- cl$data
   data <- eval(datacall) # let err
   
   ########## backward-selection
   
   back_ok <- complete.cases(data[intersect(names(data), all.vars(trm))])
+  # some S4 regression model requires `data` in `.GlobalEnv`
+  .back_data <- data[back_ok, , drop = FALSE]
+  if (exists('.back_data', envir = .GlobalEnv)) stop('remove existing `.back_data` from .GlobalEnv')
+  assign(x = '.back_data', value = .back_data, envir = .GlobalEnv)
   backward <- object |> 
-    update(data = data[back_ok, , drop = FALSE]) |>
-    stepAIC(direction = 'backward', trace = 0L) |>
+    update(data = .back_data) |>
+    ifelse(isS4(object), yes = stepAIC4, no = stepAIC)(direction = 'backward', trace = 0L) |>
     update(data = data)
-  backward$call$data <- datacall # silly but works!
+  rm(list = '.back_data', envir = .GlobalEnv)
+  # end of dealing with `.GlobalEnv`
+  if (isS4(backward)) {
+    backward@call$data <- datacall
+  } else backward$call$data <- datacall # silly but works!
   new_v <- backward |> terms() |> attr(which = 'variables', exact = TRUE) |> as.list.default()
   if (length(new_v) == 2L) cat('All variables removed by backward selection algorithm!\n')
   
-  if (!missing(upper)) {
+  if (!missing(upper)) { # not tested on S4 `object`, but should be pretty ready
     
     ########## forward-selection
     
@@ -78,10 +94,12 @@ stepAIC_complete <- function(
     assign(x = '.forw_data', value = .forw_data, envir = .GlobalEnv)
     forward <- backward |> 
       update(data = .forw_data) |> # I dont care about `$call` in intermediate step(s)
-      stepAIC(direction = 'forward', scope = list(upper = upper_scope), trace = 0L) |>
+      ifelse(isS4(object), yes = stepAIC4, no = stepAIC)(direction = 'forward', scope = list(upper = upper_scope), trace = 0L) |>
       update(data = data)
     rm(list = '.forw_data', envir = .GlobalEnv)
-    forward$call$data <- datacall # silly but works!
+    if (isS4(forward)) {
+      forward@call$data <- datacall
+    } else forward$call$data <- datacall # silly but works!
     
     #env <- new.env()
     #assign(x = '.forw_data', value = .forw_data, envir = env)

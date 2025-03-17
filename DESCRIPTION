@@ -15,4 +15,4 @@ Encoding: UTF-8
 License: GPL-2
 Depends: R (>= 4.4), MASS (== 7.3.65)
 Imports: AER (== 1.2.14), sfsmisc (== 1.1.20)
-Suggests: ordinal (== 2023.12.4.1)
+Suggests: lme4 (== 1.1.36), HSAUR3, ordinal (== 2023.12.4.1)

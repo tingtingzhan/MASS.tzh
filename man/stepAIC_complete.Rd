@@ -25,9 +25,11 @@ Perform \link[MASS]{stepAIC} on complete data, and \link[stats]{update} the retu
 Read section \strong{Note} of function \link[MASS]{stepAIC} documentation.
 }
 \note{
-\link[MASS]{stepAIC} (as of 2025-02-19) ??? does not have a parameter for the end user to specify the
+Function \link[MASS]{stepAIC} (as of 2025-02-19) ??? does not have a parameter for the end user to specify the
 threshold of AIC improvement, that should be regarded as an improvement.
 Instead, this quantity is hard coded (in \code{if (bAIC >= AIC + 1e-07) break}).
+
+Function \link[MASS]{stepAIC} (as of 2025-02-19) is hard coded for S3 regression object (e.g., \code{object$formula <- Terms}).
 }
 \examples{
 sapply(airquality, FUN = function(i) mean(is.na(i))) # missingness in `Ozone` and `Solar.R`
@@ -36,4 +38,9 @@ tryCatch(m |> stepAIC(trace = FALSE), error = identity)
 m |> stepAIC_complete()
 lm(Temp ~ Solar.R + Wind, data = airquality) |>
  stepAIC_complete(upper = ~ Ozone) # not necessarily the same!
+ 
+library(lme4); library(HSAUR3)
+?lme4::glmer
+gm2 = glmer(outcome ~ treatment*visit + (1|patientID), data=toenail, family=binomial,nAGQ=20)
+gm2 |> stepAIC_complete()
 }
