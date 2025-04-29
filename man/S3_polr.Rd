@@ -20,6 +20,7 @@ desc_.polr(x)
 S3 methods for \link[MASS]{polr}
 }
 \examples{
+library(MASS)
 options(contrasts = c('contr.treatment', 'contr.poly'))
 m = polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing, Hess = TRUE)
 

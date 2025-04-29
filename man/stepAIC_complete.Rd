@@ -32,7 +32,8 @@ Instead, this quantity is hard coded (in \code{if (bAIC >= AIC + 1e-07) break}).
 Function \link[MASS]{stepAIC} (as of 2025-02-19) is hard coded for S3 regression object (e.g., \code{object$formula <- Terms}).
 }
 \examples{
-sapply(airquality, FUN = function(i) mean(is.na(i))) # missingness in `Ozone` and `Solar.R`
+library(MASS)
+sapply(airquality, FUN = \(i) mean(is.na(i))) # missingness in `Ozone` and `Solar.R`
 summary(m <- lm(Temp ~ Ozone + Solar.R + Wind, data = airquality))
 tryCatch(m |> stepAIC(trace = FALSE), error = identity)
 m |> stepAIC_complete()

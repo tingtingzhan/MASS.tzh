@@ -15,7 +15,7 @@ check_over_dispersion(model, ...)
 select pois vs. negbin based on overdispersion
 }
 \examples{
-glm(Days ~ ., family = poisson, data = quine) |>
+glm(Days ~ ., family = poisson, data = MASS::quine) |>
  check_over_dispersion() |> 
  stepAIC_complete()
 

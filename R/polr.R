@@ -4,6 +4,7 @@
 #' @param x a \link[MASS]{polr} object
 #' 
 #' @examples
+#' library(MASS)
 #' options(contrasts = c('contr.treatment', 'contr.poly'))
 #' m = polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing, Hess = TRUE)
 #' 

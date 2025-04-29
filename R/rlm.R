@@ -18,7 +18,7 @@ desc_.rlm <- function(x) 'robust linear regression'
 #' @importFrom sfsmisc f.robftest
 #' @export
 .pval.rlm <- function(x) {
-  vapply(names(x$coefficients), FUN = function(iv) {
+  vapply(names(x$coefficients), FUN = \(iv) {
     f.robftest(object = x, var = iv)$p.value
   }, FUN.VALUE = 0, USE.NAMES = TRUE)
 }
