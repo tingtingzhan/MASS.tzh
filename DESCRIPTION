@@ -2,7 +2,6 @@ Package: MASS.tzh
 Type: Package
 Title: MASS.tzh
 Version: 0.1.0
-Date: 2025-04-28
 Description: Need to think more..
 Authors@R: c(person(given = 'Tingting', family = 'Zhan',
       role = c('aut', 'cre'), email =
@@ -14,5 +13,5 @@ RoxygenNote: 7.3.2
 Encoding: UTF-8
 License: GPL-2
 Depends: R (>= 4.5)
-Imports: AER (== 1.2.14), MASS (== 7.3.65), sfsmisc (== 1.1.20)
+Imports: AER (== 1.2.15), MASS (== 7.3.65), sfsmisc (== 1.1.20)
 Suggests: lme4 (== 1.1.36), HSAUR3, ordinal (== 2023.12.4.1)
