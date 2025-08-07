@@ -13,5 +13,8 @@ RoxygenNote: 7.3.2
 Encoding: UTF-8
 License: GPL-2
 Depends: R (>= 4.5), MASS (== 7.3.65)
-Imports: AER (== 1.2.15), sfsmisc (== 1.1.21)
-Suggests: lme4 (== 1.1.36), HSAUR3, ordinal (== 2023.12.4.1)
+Imports: methods, AER (== 1.2.15), sfsmisc (== 1.1.21), flextable (== 0.9.9), 
+    flextable.tzh, rmd.tzh, ecip
+Suggests: HSAUR3 (== 1.0.15), ordinal (== 2023.12.4.1),
+    lme4 (== 1.1.37),
+    lme4.tzh

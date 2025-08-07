@@ -3,12 +3,15 @@
 \name{S3_rlm}
 \alias{S3_rlm}
 \alias{desc_.rlm}
+\alias{.pval.rlm}
 \alias{.pval.summary.rlm}
 \title{S3 methods for \link[MASS]{rlm}}
 \usage{
-desc_.rlm(x)
+\method{desc_}{rlm}(x)
 
-.pval.summary.rlm(x)
+\method{.pval}{rlm}(x)
+
+\method{.pval}{summary.rlm}(x)
 }
 \arguments{
 \item{x}{an \link[MASS]{rlm} object}
@@ -22,3 +25,4 @@ library(MASS)
 m = rlm(stack.loss ~ ., data = stackloss)
 
 }
+\keyword{internal}

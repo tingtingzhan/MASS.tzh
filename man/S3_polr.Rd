@@ -7,11 +7,11 @@
 \alias{.pval.summary.polr}
 \title{S3 methods for \link[MASS]{polr}}
 \usage{
-getLink.polr(x)
+\method{getLink}{polr}(x)
 
-desc_.polr(x)
+\method{desc_}{polr}(x)
 
-.pval.summary.polr(x)
+\method{.pval}{summary.polr}(x)
 }
 \arguments{
 \item{x}{a \link[MASS]{polr} object}
@@ -25,3 +25,4 @@ options(contrasts = c('contr.treatment', 'contr.poly'))
 m = polr(Sat ~ Infl + Type + Cont, weights = Freq, data = housing, Hess = TRUE)
 
 }
+\keyword{internal}

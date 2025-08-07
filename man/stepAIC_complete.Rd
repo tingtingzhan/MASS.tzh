@@ -33,7 +33,7 @@ Function \link[MASS]{stepAIC} (as of 2025-02-19) is hard coded for S3 regression
 }
 \examples{
 library(MASS)
-sapply(airquality, FUN = \(i) mean(is.na(i))) # missingness in `Ozone` and `Solar.R`
+airquality |> sapply(FUN = \(i) mean(is.na(i))) # missingness in `Ozone` and `Solar.R`
 summary(m <- lm(Temp ~ Ozone + Solar.R + Wind, data = airquality))
 tryCatch(m |> stepAIC(trace = FALSE), error = identity)
 m |> stepAIC_complete()
@@ -44,4 +44,9 @@ library(lme4); library(HSAUR3)
 ?lme4::glmer
 gm2 = glmer(outcome ~ treatment*visit + (1|patientID), data=toenail, family=binomial,nAGQ=20)
 gm2 |> stepAIC_complete()
+
+library(rmd.tzh); library(ecip); list(
+ 'lm' = m |> stepAIC_complete(),
+ 'glmer' = gm2 |> stepAIC_complete()
+) |> render_(file = 'stepAIC')
 }

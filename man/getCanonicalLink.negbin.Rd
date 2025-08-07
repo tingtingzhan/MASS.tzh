@@ -4,7 +4,7 @@
 \alias{getCanonicalLink.negbin}
 \title{getCanonicalLink}
 \usage{
-getCanonicalLink.negbin(x)
+\method{getCanonicalLink}{negbin}(x)
 }
 \arguments{
 \item{x}{object returned from function \link[MASS]{glm.nb}}
@@ -16,5 +16,6 @@ getCanonicalLink.negbin(x)
 library(MASS)
 glm.nb(Days ~ Sex/(Age + Eth*Lrn), data = quine) |>
   getCanonicalLink.negbin()
-  
+
 }
+\keyword{internal}
