@@ -49,9 +49,9 @@ desc_.rlm <- function(x) 'robust linear regression'
 #' @param x,xnm,... ..
 #' 
 #' @examples
-#' library(rmd.tzh); library(ecip); list(
+#' library(ecip); list(
 #'  '`rlm`' = rlm(stack.loss ~ ., data = stackloss)
-#' ) |> render_(file = 'rlm')
+#' ) |> rmd.tzh::render_(file = 'rlm')
 #' 
 #' @keywords internal
 #' @importFrom rmd.tzh md_

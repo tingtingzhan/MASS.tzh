@@ -41,10 +41,10 @@
 #' gm2 = glmer(outcome ~ treatment*visit + (1|patientID), data=toenail, family=binomial,nAGQ=20)
 #' gm2 |> stepAIC_complete()
 #' 
-#' library(rmd.tzh); library(ecip); list(
+#' library(ecip); list(
 #'  'lm' = m |> stepAIC_complete(),
 #'  'glmer' = gm2 |> stepAIC_complete()
-#' ) |> render_(file = 'stepAIC')
+#' ) |> rmd.tzh::render_(file = 'stepAIC')
 #' @importFrom MASS stepAIC
 #' @importFrom stats complete.cases terms update update.formula
 #' @export
