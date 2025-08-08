@@ -19,10 +19,4 @@
 \description{
 S3 methods for \link[MASS]{rlm}
 }
-\examples{
-library(MASS)
-# ?MASS::rlm
-m = rlm(stack.loss ~ ., data = stackloss)
-
-}
 \keyword{internal}

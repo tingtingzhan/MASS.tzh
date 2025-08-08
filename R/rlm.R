@@ -3,20 +3,17 @@
 #' 
 #' @param x an \link[MASS]{rlm} object
 #' 
-#' @examples
-#' library(MASS)
-#' # ?MASS::rlm
-#' m = rlm(stack.loss ~ ., data = stackloss)
-#' 
 #' @keywords internal
 #' @name S3_rlm
+#' @importFrom ecip desc_
+#' @export desc_.rlm
 #' @export
 desc_.rlm <- function(x) 'robust linear regression'
 
 
 # must!!
 # ?lmtest::coeftest will dispatch to ?lmtest::coeftest.default
-#' @name S3_rlm
+#' @rdname S3_rlm
 #' @importFrom sfsmisc f.robftest
 #' @importFrom ecip .pval
 #' @export .pval.rlm
