@@ -114,17 +114,6 @@ as.univar.default <- function(object, ...) {
 }
 
 
-if (FALSE) {
-  library(ecip)
-  methods(class = 'listof') |>
-    attr(which = 'info', exact = TRUE) |>
-    subset.data.frame(subset = (from %in% c('ecip')))
-  methods(class = 'univar') |>
-    attr(which = 'info', exact = TRUE) |>
-    subset.data.frame(subset = (from %in% c('MASS.tzh')))
-}
-
-
 
 
 #' @importFrom ecip ecip simple_matrix_ecip intercept_rm.ecip
