@@ -9,8 +9,7 @@
 #' @param ... additional parameters, currently of no
 #' 
 #' @keywords internal
-#' @name as.univar
-#' @aliases univar
+#' @name univar
 #' @export
 as.univar <- function(object, ...) UseMethod(generic = 'as.univar')
 
@@ -18,7 +17,8 @@ as.univar <- function(object, ...) UseMethod(generic = 'as.univar')
 
 
 
-#' @rdname as.univar
+#' @rdname univar
+#' 
 #' @param envir \link[base]{environment}, 
 #' for \link[stats]{terms} and \link[stats]{formula} dispatches,
 #' so that the returned univariable formula(s) are 
@@ -56,8 +56,13 @@ as.univar.terms <- function(object, envir = parent.frame(), ...) {
 }
 
 
-#' @rdname as.univar
+#' @rdname univar
 #' @param formula \link[stats]{formula}
+#' 
+#' @details
+#' Function [as.univar.formula()] and [as.univar.terms()] return a \link[base]{list} of \link[stats]{formula}s.
+#' 
+#' 
 #' @importFrom stats terms.formula
 #' @method as.univar formula
 #' @export as.univar.formula
@@ -71,11 +76,15 @@ as.univar.formula <- function(formula, envir = parent.frame(), ...) {
 
 
 
-#' @rdname as.univar
+#' @rdname univar
+#' 
+#' @details
+#' Function [as.univar.default()] returns a \link[stats]{listof} regression models.
+#' 
 #' @examples
 #' # see ?md_
 #' @importFrom stats terms update
-#' @importFrom ecip isIntercept
+#' @importFrom ecip isIntercept .pval
 #' @method as.univar default
 #' @export as.univar.default
 #' @export
@@ -88,7 +97,7 @@ as.univar.default <- function(object, ...) {
     lapply(FUN = \(fom) update(object, formula. = fom))
   # univariable regression models
   
-  fn_min_pvalue <- function(x) {
+  fn_min_pvalue <- \(x) {
     p0 <- .pval(x) # use S3 [.pval()]
     p <- p0[!isIntercept(names(p0))] # remove intercept important!
     # missing pvalue: missing observed event ('coxph'), etc
@@ -99,13 +108,24 @@ as.univar.default <- function(object, ...) {
   attr(ret, which = 'min_pvalue') <- ret |>
     vapply(FUN = fn_min_pvalue, FUN.VALUE = NA_real_)
   attr(ret, which = 'initial.model') <- object
-  class(ret) <- c(
-    'univar', 
-    'listof' # tzh is learning about 'listof'
-  )
+  class(ret) <- c('univar', 'listof')
   return(ret)
   
 }
+
+
+if (FALSE) {
+  library(ecip)
+  methods(class = 'listof') |>
+    attr(which = 'info', exact = TRUE) |>
+    subset.data.frame(subset = (from %in% c('ecip')))
+  methods(class = 'univar') |>
+    attr(which = 'info', exact = TRUE) |>
+    subset.data.frame(subset = (from %in% c('MASS.tzh')))
+}
+
+
+
 
 #' @importFrom ecip ecip simple_matrix_ecip intercept_rm.ecip
 #' @export
@@ -138,7 +158,8 @@ as.matrix.univar <- function(x, ...) {
 #' 
 #' @returns 
 #' Function [as_flextable.univar()] returns a \link[flextable]{flextable}.
-#'  
+#' 
+#' @keywords internal  
 #' @importFrom flextable as_flextable
 #' @importFrom flextable.tzh as_flextable.matrix
 #' @export as_flextable.univar
@@ -154,6 +175,29 @@ as_flextable.univar <- function(x, ...) {
     )
 }
 
+#' @title R Markdown Lines for [univar] Object
+#' 
+#' @param x [univar] object
+#' 
+#' @param xnm ..
+#' 
+#' @param ... ..
+#' 
+#' @keywords internal
+#' @importFrom rmd.tzh md_
+#' @importClassesFrom rmd.tzh md_lines
+#' @importFrom methods new
+#' @export md_.univar
+#' @export
+md_.univar <- function(x, xnm, ...) {
+  c(
+    '```{r}', 
+    '#| echo: false', 
+    xnm |> sprintf(fmt = 'as_flextable.univar(%s)'),
+    '```'
+  ) |>
+    new(Class = 'md_lines')
+}
 
 
 #' @export
@@ -173,12 +217,13 @@ print.univar <- function(x, ...) {
 # base::subset
 #' @title subset.univar
 #' 
-#' @param x [as.univar] object
+#' @param x [univar] object
 #' 
 #' @param subset ..
 #' 
 #' @param ... ..
 #' 
+#' @keywords internal
 #' @export subset.univar
 #' @export
 subset.univar <- function(x, subset, ...) {

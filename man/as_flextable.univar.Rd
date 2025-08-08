@@ -17,3 +17,4 @@ Function \code{\link[=as_flextable.univar]{as_flextable.univar()}} returns a \li
 \description{
 ..
 }
+\keyword{internal}
