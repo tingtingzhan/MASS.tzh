@@ -6,6 +6,8 @@
 #' 
 #' @param object see **Usage**
 #' 
+#' @param mc.cores \link[base]{integer} scalar, see function \link[parallel]{mclapply}.
+#' 
 #' @param ... additional parameters, currently of no
 #' 
 #' @keywords internal
@@ -85,16 +87,24 @@ as.univar.formula <- function(formula, envir = parent.frame(), ...) {
 #' # see ?md_
 #' @importFrom stats terms update
 #' @importFrom ecip isIntercept .pval
+#' @importFrom parallel mclapply
 #' @method as.univar default
 #' @export as.univar.default
 #' @export
-as.univar.default <- function(object, ...) {
+as.univar.default <- function(
+    object,
+    ..., 
+    mc.cores = getOption('mc.cores')
+) {
   
   ret <- object |> 
     formula() |> # must for mixed models, e.g., ?ordinal::clmm, ?lme4::merMod
     terms() |> 
     as.univar.terms() |>
-    lapply(FUN = \(fom) update(object, formula. = fom))
+    mclapply(mc.cores = mc.cores, FUN = \(fom) {
+      update(object, formula. = fom) |>
+        suppressWarnings()
+    })
   # univariable regression models
   
   fn_min_pvalue <- \(x) {

@@ -14,7 +14,7 @@ as.univar(object, ...)
 
 \method{as.univar}{formula}(formula, envir = parent.frame(), ...)
 
-\method{as.univar}{default}(object, ...)
+\method{as.univar}{default}(object, ..., mc.cores = getOption("mc.cores"))
 }
 \arguments{
 \item{object}{see \strong{Usage}}
@@ -27,6 +27,8 @@ so that the returned univariable formula(s) are
 in the same \link[base]{environment} as the input}
 
 \item{formula}{\link[stats]{formula}}
+
+\item{mc.cores}{\link[base]{integer} scalar, see function \link[parallel]{mclapply}.}
 }
 \description{
 Convert into Multiple Univariable Structures

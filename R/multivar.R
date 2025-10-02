@@ -42,7 +42,8 @@ as.multivar <- function(x, ...) {
   
   ret <- x[[1L]] |> 
     update(formula. = call(name = '~', lhs, rhs) |> eval()) |>
-    stepAIC_complete()
+    stepAIC_complete() |>
+    suppressWarnings() 
   attr(ret, which = 'univar') <- x
   attr(ret, which = 'p_thres') <- attr(x1, which = 'p_thres', exact = TRUE)
   class(ret) <- c('multivar', class(ret))
