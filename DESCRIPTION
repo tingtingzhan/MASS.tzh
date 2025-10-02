@@ -9,11 +9,11 @@ Authors@R: c(person(given = 'Tingting', family = 'Zhan',
       '0000-0001-9971-4844')))
 Language: en-US
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Encoding: UTF-8
 License: GPL-2
 Depends: R (>= 4.5), MASS (== 7.3.65)
-Imports: methods, AER (== 1.2.15), sfsmisc (== 1.1.21), flextable (== 0.9.10), 
+Imports: methods, AER (== 1.2.15), sfsmisc (== 1.1.22), flextable (== 0.9.10), 
     flextable.tzh, rmd.tzh, ecip
 Suggests: HSAUR3, ordinal,
     lme4,
