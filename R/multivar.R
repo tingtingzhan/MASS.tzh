@@ -63,8 +63,8 @@ as.multivar <- function(x, ...) {
 #' 
 #' @keywords internal 
 #' @importFrom flextable as_flextable color
-#' @importFrom flextable.tzh as_flextable.matrix
-#' @importFrom rmd.tzh label_pvalue_sym
+#' @importFrom fastmd as_flextable.matrix
+#' @importFrom fastmd label_pvalue_sym
 #' @importFrom ecip intercept_rm.matrix
 #' @export as_flextable.multivar
 #' @export
@@ -173,11 +173,11 @@ desc_.multivar <- function(x) (x[[length(x)]]) |> desc_()
 #'  'multivar, `lm`' = m1 |> as.univar() |> as.multivar(subset = min_pvalue < .1),
 #'  'multivar, `merMod`' = m2 |> as.univar() |> as.multivar(subset = min_pvalue < .1)# ,
 #'  # 'multivar, `clmm`' = m3 |> as.univar() |> as.multivar(subset = min_pvalue < .1)# still bug
-#' ) |> rmd.tzh::render_(file = 'multivar')
+#' ) |> fastmd::render_(file = 'multivar')
 #' @keywords internal
 #' @importFrom stats formula
-#' @importFrom rmd.tzh md_ fromPackage pkg_text
-#' @importClassesFrom rmd.tzh md_lines
+#' @importFrom fastmd md_ fromPackage pkg_text
+#' @importClassesFrom fastmd md_lines
 #' @export md_.multivar
 #' @export
 md_.multivar <- function(x, xnm, ...) {
@@ -214,7 +214,7 @@ md_.multivar <- function(x, xnm, ...) {
   ) |>
     new(Class = 'md_lines')
   
-  c(z1, z2, z3) # rmd.tzh::c.md_lines
+  c(z1, z2, z3) # fastmd::c.md_lines
   
 }
 

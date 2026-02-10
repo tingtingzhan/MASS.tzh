@@ -15,7 +15,7 @@ R Markdown Lines for \link[MASS]{rlm}
 \examples{
 library(ecip); list(
  '`rlm`' = rlm(stack.loss ~ ., data = stackloss)
-) |> rmd.tzh::render_(file = 'rlm')
+) |> fastmd::render_(file = 'rlm')
 
 }
 \keyword{internal}

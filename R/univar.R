@@ -130,7 +130,7 @@ as.univar.default <- function(
 #' @export
 as.matrix.univar <- function(x, ...) {
   # !! needed when combining `univar` and `multivar`
-  # !! only prints \link[rmd.tzh]{label_pvalue_sym} and `@nobs`
+  # !! only prints \link[fastmd]{label_pvalue_sym} and `@nobs`
   y <- x |> 
     lapply(FUN = \(i) {
       i |>
@@ -160,7 +160,7 @@ as.matrix.univar <- function(x, ...) {
 #' 
 #' @keywords internal  
 #' @importFrom flextable as_flextable
-#' @importFrom flextable.tzh as_flextable.matrix
+#' @importFrom fastmd as_flextable.matrix
 #' @export as_flextable.univar
 #' @export
 as_flextable.univar <- function(x, ...) {
@@ -183,8 +183,8 @@ as_flextable.univar <- function(x, ...) {
 #' @param ... ..
 #' 
 #' @keywords internal
-#' @importFrom rmd.tzh md_
-#' @importClassesFrom rmd.tzh md_lines
+#' @importFrom fastmd md_
+#' @importClassesFrom fastmd md_lines
 #' @importFrom methods new
 #' @export md_.univar
 #' @export

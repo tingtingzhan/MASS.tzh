@@ -44,7 +44,7 @@
 #' library(ecip); list(
 #'  'lm' = m |> stepAIC_complete(),
 #'  'glmer' = gm2 |> stepAIC_complete()
-#' ) |> rmd.tzh::render_(file = 'stepAIC')
+#' ) |> fastmd::render_(file = 'stepAIC')
 #' @importFrom MASS stepAIC
 #' @importFrom stats complete.cases terms update update.formula
 #' @export
@@ -213,7 +213,7 @@ as.matrix.stepAIC <- function(x, ...) {
 #' 
 #' @keywords internal
 #' @importFrom flextable as_flextable color
-#' @importFrom flextable.tzh as_flextable.matrix
+#' @importFrom fastmd as_flextable.matrix
 #' @export as_flextable.stepAIC
 #' @export
 as_flextable.stepAIC <- function(
@@ -247,8 +247,8 @@ as_flextable.stepAIC <- function(
 #' @param x,xnm,... ..
 #' 
 #' @keywords internal
-#' @importFrom rmd.tzh md_
-#' @importClassesFrom rmd.tzh md_lines
+#' @importFrom fastmd md_
+#' @importClassesFrom fastmd md_lines
 #' @importFrom ecip Sprintf
 #' @importFrom methods new
 #' @export md_.stepAIC
@@ -270,7 +270,7 @@ md_.stepAIC <- function(x, xnm, ...) {
   ) |>
     new(Class = 'md_lines')
   
-  c(z1, z2, z3) # ?rmd.tzh::c.md_lines
+  c(z1, z2, z3) # ?fastmd::c.md_lines
   
 }
 

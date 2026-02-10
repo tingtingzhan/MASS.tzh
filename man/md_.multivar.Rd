@@ -31,6 +31,6 @@ library(ecip); list(
  'multivar, `lm`' = m1 |> as.univar() |> as.multivar(subset = min_pvalue < .1),
  'multivar, `merMod`' = m2 |> as.univar() |> as.multivar(subset = min_pvalue < .1)# ,
  # 'multivar, `clmm`' = m3 |> as.univar() |> as.multivar(subset = min_pvalue < .1)# still bug
-) |> rmd.tzh::render_(file = 'multivar')
+) |> fastmd::render_(file = 'multivar')
 }
 \keyword{internal}

@@ -48,10 +48,10 @@ desc_.rlm <- function(x) 'robust linear regression'
 #' @examples
 #' library(ecip); list(
 #'  '`rlm`' = rlm(stack.loss ~ ., data = stackloss)
-#' ) |> rmd.tzh::render_(file = 'rlm')
+#' ) |> fastmd::render_(file = 'rlm')
 #' 
 #' @keywords internal
-#' @importFrom rmd.tzh md_
+#' @importFrom fastmd md_
 #' @importFrom ecip md_ecip
 #' @export md_.rlm
 #' @export

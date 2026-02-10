@@ -48,5 +48,5 @@ gm2 |> stepAIC_complete()
 library(ecip); list(
  'lm' = m |> stepAIC_complete(),
  'glmer' = gm2 |> stepAIC_complete()
-) |> rmd.tzh::render_(file = 'stepAIC')
+) |> fastmd::render_(file = 'stepAIC')
 }
