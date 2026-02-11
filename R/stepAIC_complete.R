@@ -249,18 +249,18 @@ as_flextable.stepAIC <- function(
 #' @keywords internal
 #' @importFrom fastmd md_
 #' @importClassesFrom fastmd md_lines
-#' @importFrom ecip Sprintf
+#' @importFrom ecip .md_reg
 #' @importFrom methods new
 #' @export md_.stepAIC
 #' @export
 md_.stepAIC <- function(x, xnm, ...) {
   
   z1 <- x[[length(x)]] |> 
-    Sprintf() |>
+    .md_reg() |>
     new(Class = 'md_lines')
   
   z2 <- x |>
-    .Sprintf.stepAIC() 
+    md_stepAIC_int() 
   
   z3 <- c(
     '```{r}', 
@@ -277,7 +277,7 @@ md_.stepAIC <- function(x, xnm, ...) {
 
 
 
-.Sprintf.stepAIC <- function(x) {
+md_stepAIC_int <- \(x) {
   
   upper <- x |> attr(which = 'upper', exact = TRUE)
   
