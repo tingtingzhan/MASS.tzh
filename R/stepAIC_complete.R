@@ -36,7 +36,7 @@
 #' lm(Temp ~ Solar.R + Wind, data = airquality) |>
 #'  stepAIC_complete(upper = ~ Ozone) # not necessarily the same!
 #'  
-#' library(lme4); library(HSAUR3)
+#' library(lme4.tzh); library(HSAUR3)
 #' ?lme4::glmer
 #' gm2 = glmer(outcome ~ treatment*visit + (1|patientID), data=toenail, family=binomial,nAGQ=20)
 #' gm2 |> stepAIC_complete()
@@ -45,8 +45,7 @@
 #'  'lm' = m |> stepAIC_complete(),
 #'  'glmer' = gm2 |> stepAIC_complete()
 #' ) |> fastmd::render_(file = 'stepAIC')
-#' @importFrom MASS stepAIC
-#' @importFrom stats complete.cases terms update update.formula
+#' @keywords internal
 #' @export
 stepAIC_complete <- function(
     object,
@@ -250,7 +249,6 @@ as_flextable.stepAIC <- function(
 #' @importFrom fastmd md_
 #' @importClassesFrom fastmd md_lines
 #' @importFrom ecip .md_reg
-#' @importFrom methods new
 #' @export md_.stepAIC
 #' @export
 md_.stepAIC <- function(x, xnm, ...) {
@@ -288,19 +286,23 @@ md_stepAIC_int <- \(x) {
     vapply(FUN = deparse1, FUN.VALUE = '')
     
   txt1 <- sprintf(
-    fmt = '%s stepwise variable selection by [Akaike information criterion (AIC)](https://en.wikipedia.org/wiki/Akaike_information_criterion) was performed using <u>**`R`**</u> package <u>**`MASS`**</u>. Initial model started with predictors %s, followed by a backward stepwise variable selection.',
+    fmt = 'The initial model started with predictors %s, then followed by a %s stepwise variable selection by [@Akaike74 information criterion (AIC)](https://en.wikipedia.org/wiki/Akaike_information_criterion) performed using <u>**`R`**</u> package <u>**`MASS`**</u>. ',
+    paste0('`', tmp[-(1:2)], '`', collapse = ', '),
     if (length(upper)) {
-      'Backward-forward'
-    } else 'Backward',
-    paste0('`', tmp[-(1:2)], '`', collapse = ', '))
+      'backward-forward'
+    } else 'backward'
+  ) |> 
+    new(Class = 'md_lines', bibentry = .akaike74())
   
-  txt2 <- if (length(upper)) sprintf(
-    fmt = 'Additional predictor(s) considered in the subsequent forward stepwise selection were %s.',
-    paste0('`', all.vars(upper[[2L]]), '`', collapse = ', ')
-  ) # else MULL
+  txt2 <- if (length(upper)) {
+    sprintf(
+      fmt = 'Additional predictor(s) considered in the subsequent forward stepwise selection were %s.',
+      paste0('`', all.vars(upper[[2L]]), '`', collapse = ', ')
+    ) |>
+      new(Class = 'md_lines')
+  } # else MULL
   
-  paste(txt1, txt2) |>
-    new(Class = 'md_lines')
+  c(txt1, txt2) # fastmd::c.md_lines
   
 }
 

@@ -6,7 +6,6 @@
 #' @param ... parameters of [subset.univar()]
 #' 
 #' @keywords internal
-#' @importFrom stats update
 #' @importFrom ecip vterms
 #' @aliases multivar
 #' @export
@@ -175,7 +174,6 @@ desc_.multivar <- function(x) (x[[length(x)]]) |> desc_()
 #'  # 'multivar, `clmm`' = m3 |> as.univar() |> as.multivar(subset = min_pvalue < .1)# still bug
 #' ) |> fastmd::render_(file = 'multivar')
 #' @keywords internal
-#' @importFrom stats formula
 #' @importFrom fastmd md_ fromPackage pkg_text
 #' @importClassesFrom fastmd md_lines
 #' @export md_.multivar

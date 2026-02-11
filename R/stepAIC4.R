@@ -14,8 +14,7 @@
 #' ?lme4::glmer
 #' gm2 = glmer(outcome ~ treatment*visit + (1|patientID), data=toenail, family=binomial,nAGQ=20)
 #' gm2 |> stepAIC4(direction = 'backward')
-#' @importFrom MASS addterm dropterm
-#' @importFrom stats deviance extractAIC factor.scope formula nobs
+#' @keywords internal
 #' @export
 stepAIC4 <- function(
     object, 

@@ -14,8 +14,6 @@
 #'  stepAIC_complete()
 #' 
 #' @importFrom AER dispersiontest
-#' @importFrom MASS glm.nb
-#' @importFrom stats family
 #' @export
 check_over_dispersion <- function(model, ...) {
   if (!inherits(model, what = 'glm') || family(model)$family != 'poisson') stop('input needs to be Poisson regression model')

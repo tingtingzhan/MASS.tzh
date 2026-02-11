@@ -64,8 +64,7 @@ as.univar.terms <- function(object, envir = parent.frame(), ...) {
 #' @details
 #' Function [as.univar.formula()] and [as.univar.terms()] return a \link[base]{list} of \link[stats]{formula}s.
 #' 
-#' 
-#' @importFrom stats terms.formula
+#' @keywords internal
 #' @method as.univar formula
 #' @export as.univar.formula
 #' @export
@@ -85,7 +84,6 @@ as.univar.formula <- function(formula, envir = parent.frame(), ...) {
 #' 
 #' @examples
 #' # see ?md_
-#' @importFrom stats terms update
 #' @importFrom ecip isIntercept .pval
 #' @importFrom parallel mclapply
 #' @method as.univar default
@@ -185,7 +183,6 @@ as_flextable.univar <- function(x, ...) {
 #' @keywords internal
 #' @importFrom fastmd md_
 #' @importClassesFrom fastmd md_lines
-#' @importFrom methods new
 #' @export md_.univar
 #' @export
 md_.univar <- function(x, xnm, ...) {
