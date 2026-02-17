@@ -48,7 +48,7 @@ desc_.rlm <- function(x) 'robust linear regression'
 #' @examples
 #' library(ecip); list(
 #'  '`rlm`' = rlm(stack.loss ~ ., data = stackloss)
-#' ) |> fastmd::render_(file = 'rlm')
+#' ) |> fastmd::render2html(file = 'rlm')
 #' 
 #' @keywords internal
 #' @importFrom fastmd md_
