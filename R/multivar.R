@@ -206,7 +206,6 @@ md_.multivar <- function(x, xnm, ...) {
   
   z3 <- c(
     '```{r}', 
-    '#| echo: false', 
     xnm |> sprintf(fmt = 'as_flextable(%s)'),
     '```'
   ) |>

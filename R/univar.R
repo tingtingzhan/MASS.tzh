@@ -188,7 +188,6 @@ as_flextable.univar <- function(x, ...) {
 md_.univar <- function(x, xnm, ...) {
   c(
     '```{r}', 
-    '#| echo: false', 
     xnm |> sprintf(fmt = 'as_flextable.univar(%s)'),
     '```'
   ) |>
