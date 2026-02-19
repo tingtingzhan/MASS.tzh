@@ -174,7 +174,7 @@ desc_.multivar <- function(x) (x[[length(x)]]) |> desc_()
 #'  # 'multivar, `clmm`' = m3 |> as.univar() |> as.multivar(subset = min_pvalue < .1)# still bug
 #' ) |> fastmd::render2html()
 #' @keywords internal
-#' @importFrom fastmd md_ fromPackage pkg_text
+#' @importFrom fastmd md_ md_flextable_ fromPackage pkg_text
 #' @importClassesFrom fastmd md_lines
 #' @export md_.multivar
 #' @export
@@ -204,9 +204,7 @@ md_.multivar <- function(x, xnm, ...) {
   ) |>
     new(Class = 'md_lines', package = 'MASS')
   
-  z3 <- xnm |> 
-    sprintf(fmt = 'as_flextable(%s)') |>
-    new(Class = 'md_lines', chunk.r = TRUE)
+  z3 <- md_flextable_(xnm = xnm, ...)
   
   c(z1, z2, z3) # fastmd::c.md_lines
   

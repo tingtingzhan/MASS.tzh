@@ -181,15 +181,11 @@ as_flextable.univar <- function(x, ...) {
 #' @param ... ..
 #' 
 #' @keywords internal
-#' @importFrom fastmd md_
+#' @importFrom fastmd md_ md_flextable_
 #' @importClassesFrom fastmd md_lines
 #' @export md_.univar
 #' @export
-md_.univar <- function(x, xnm, ...) {
-  xnm |> 
-    sprintf(fmt = 'as_flextable.univar(%s)') |>
-    new(Class = 'md_lines', chunk.r = TRUE)
-}
+md_.univar <- md_flextable_
 
 
 #' @export
