@@ -48,6 +48,6 @@ gm2 |> stepAIC_complete()
 library(ecip); list(
  'lm' = m |> stepAIC_complete(),
  'glmer' = gm2 |> stepAIC_complete()
-) |> fastmd::render2html(file = 'stepAIC')
+) |> fastmd::render2html()
 }
 \keyword{internal}
