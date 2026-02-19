@@ -100,7 +100,11 @@ as.univar.default <- function(
     terms() |> 
     as.univar.terms() |>
     mclapply(mc.cores = mc.cores, FUN = \(fom) {
-      update(object, formula. = fom) |>
+      # stats::update.default
+      # nlme:::update.lme  
+      # nlme:::update.gls
+      # have **different** 2nd parameter name!!
+      update(object, fom) |>
         suppressWarnings()
     })
   # univariable regression models

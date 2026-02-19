@@ -39,8 +39,13 @@ as.multivar <- function(x, ...) {
     rhs <- 1 # only good for non-random effects!!!
   }
   
+  
   ret <- x[[1L]] |> 
-    update(formula. = call(name = '~', lhs, rhs) |> eval()) |>
+    update(call(name = '~', lhs, rhs) |> eval()) |>
+    # stats:::update.default
+    # nlme:::update.lme  
+    # nlme:::update.gls
+    # have different 2nd parameter name!!
     stepAIC_complete() |>
     suppressWarnings() 
   attr(ret, which = 'univar') <- x

@@ -67,7 +67,9 @@ stepAIC_complete <- function(
   back_ok <- complete.cases(data[intersect(names(data), all.vars(trm))])
   # some S4 regression model requires `data` in `.GlobalEnv`
   .back_data <- data[back_ok, , drop = FALSE]
-  if (exists('.back_data', envir = .GlobalEnv)) stop('remove existing `.back_data` from .GlobalEnv')
+  if (exists('.back_data', envir = .GlobalEnv)) {
+    rm(list = '.back_data', envir = .GlobalEnv)
+  }
   assign(x = '.back_data', value = .back_data, envir = .GlobalEnv)
   backward <- object |> 
     update(data = .back_data) |>
