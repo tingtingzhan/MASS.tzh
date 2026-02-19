@@ -46,7 +46,7 @@ as.multivar <- function(x, ...) {
     # nlme:::update.lme  
     # nlme:::update.gls
     # have different 2nd parameter name!!
-    stepAIC_complete() |>
+    stepAIC_complete() |> # will not always succeed!
     suppressWarnings() 
   attr(ret, which = 'univar') <- x
   attr(ret, which = 'p_thres') <- attr(x1, which = 'p_thres', exact = TRUE)
@@ -77,6 +77,14 @@ as_flextable.multivar <- function(x, ...) {
   # '\u274c' # unicode 'Cross Mark'
   # '\U1f6ab' # unicode 'No Entry Sign'
   
+  is_stepAIC <- inherits(x, what = 'stepAIC')
+  if (!is_stepAIC) {
+    # stepAIC failed (most likely no AIC defined)
+    x0 <- x
+    class(x0) <- class(x0) |> 
+      setdiff(y = 'multivar')
+  }
+  
   u <- x |> 
     attr(which = 'univar', exact = TRUE) |>
     as.matrix.univar()
@@ -88,9 +96,16 @@ as_flextable.multivar <- function(x, ...) {
       label_pvalue_sym(add_p = TRUE)()
   )
   
-  m <- x |>
-    as.matrix.stepAIC() |>
-    intercept_rm.matrix()
+  m <- if (inherits(x, what = 'stepAIC')) {
+    x |>
+      as.matrix.stepAIC() |>
+      intercept_rm.matrix()
+  } else { 
+    x0 |> 
+      ecip() |>
+      as.matrix.ecip(type = 'ncol1') |>
+      intercept_rm.matrix()
+  }
   
   ret <- cbind(u, 
                array('\U1f6ab', dim = c(nrow(u), ncol(m)), dimnames = list(NULL, colnames(m))))
@@ -101,11 +116,13 @@ as_flextable.multivar <- function(x, ...) {
   
   ret |>
     as_flextable.matrix(
-      row.title = ecip(x[[length(x)]])@endpoint,
+      row.title = if (is_stepAIC) {
+        ecip(x[[length(x)]])@endpoint
+      } else ecip(x0)@endpoint,
       hline_i = u |> attr(which = 'nrow', exact = TRUE) |> cumsum()
     ) |>
     color(
-      j = 2:3, # univariable column, initial multivariable column
+      j = if (is_stepAIC) 2:3 else 2, # univariable column, initial multivariable column
       color = 'grey60', part = 'all') |>
     add_footer_lines(values = c(
       '\u274c: predictor(s) removed by stepwise algorithm.',

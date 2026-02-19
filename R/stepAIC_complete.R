@@ -71,10 +71,16 @@ stepAIC_complete <- function(
     rm(list = '.back_data', envir = .GlobalEnv)
   }
   assign(x = '.back_data', value = .back_data, envir = .GlobalEnv)
-  backward <- object |> 
-    update(data = .back_data) |>
-    ifelse(isS4(object), yes = stepAIC4, no = stepAIC)(direction = 'backward', trace = 0L) |>
-    update(data = data)
+  backward <- tryCatch(expr = {
+    object |> 
+      update(data = .back_data) |>
+      ifelse(isS4(object), yes = stepAIC4, no = stepAIC)(direction = 'backward', trace = 0L) |>
+      update(data = data)
+  }, error = identity)
+  if (inherits(backward, what = 'error')) {
+    # most likely AIC not defined
+    return(object) # exception handling
+  }
   rm(list = '.back_data', envir = .GlobalEnv)
   # end of dealing with `.GlobalEnv`
   if (isS4(backward)) {
