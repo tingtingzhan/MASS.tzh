@@ -248,14 +248,13 @@ as_flextable.stepAIC <- function(
 #' @keywords internal
 #' @importFrom fastmd md_ md_flextable_
 #' @importClassesFrom fastmd md_lines
-#' @importFrom ecip .md_reg
+#' @importFrom ecip md_regression_
 #' @export md_.stepAIC
 #' @export
 md_.stepAIC <- function(x, xnm, ...) {
   
   z1 <- x[[length(x)]] |> 
-    .md_reg() |>
-    new(Class = 'md_lines')
+    md_regression_()
   
   z2 <- x |>
     md_stepAIC_int() 
@@ -279,7 +278,7 @@ md_stepAIC_int <- \(x) {
     as.list.default() |>
     vapply(FUN = deparse1, FUN.VALUE = '')
     
-  txt1 <- sprintf(
+  z1 <- sprintf(
     fmt = 'The initial model started with predictors %s, then followed by a %s stepwise variable selection by [@Akaike74 information criterion (AIC)](https://en.wikipedia.org/wiki/Akaike_information_criterion) performed using <u>**`R`**</u> package <u>**`MASS`**</u>. ',
     paste0('`', tmp[-(1:2)], '`', collapse = ', '),
     if (length(upper)) {
@@ -288,7 +287,7 @@ md_stepAIC_int <- \(x) {
   ) |> 
     new(Class = 'md_lines', bibentry = .akaike74())
   
-  txt2 <- if (length(upper)) {
+  z2 <- if (length(upper)) {
     sprintf(
       fmt = 'Additional predictor(s) considered in the subsequent forward stepwise selection were %s.',
       paste0('`', all.vars(upper[[2L]]), '`', collapse = ', ')
@@ -296,7 +295,7 @@ md_stepAIC_int <- \(x) {
       new(Class = 'md_lines')
   } # else MULL
   
-  c(txt1, txt2) # fastmd::c.md_lines
+  c(z1, z2) # fastmd::c.md_lines
   
 }
 
