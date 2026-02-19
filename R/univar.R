@@ -186,12 +186,9 @@ as_flextable.univar <- function(x, ...) {
 #' @export md_.univar
 #' @export
 md_.univar <- function(x, xnm, ...) {
-  c(
-    '```{r}', 
-    xnm |> sprintf(fmt = 'as_flextable.univar(%s)'),
-    '```'
-  ) |>
-    new(Class = 'md_lines')
+  xnm |> 
+    sprintf(fmt = 'as_flextable.univar(%s)') |>
+    new(Class = 'md_lines', chunk.r = TRUE)
 }
 
 
