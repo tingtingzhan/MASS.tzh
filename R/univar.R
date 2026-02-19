@@ -172,18 +172,7 @@ as_flextable.univar <- function(x, ...) {
     )
 }
 
-#' @title R Markdown Lines for [univar] Object
-#' 
-#' @param x [univar] object
-#' 
-#' @param xnm ..
-#' 
-#' @param ... ..
-#' 
-#' @keywords internal
 #' @importFrom fastmd md_ md_flextable_
-#' @importClassesFrom fastmd md_lines
-#' @export md_.univar
 #' @export
 md_.univar <- md_flextable_
 
