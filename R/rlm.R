@@ -3,6 +3,10 @@
 #' 
 #' @param x an \link[MASS]{rlm} object
 #' 
+#' @examples
+#' library(ecip); list(
+#'  '`rlm`' = rlm(stack.loss ~ ., data = stackloss)
+#' ) |> fastmd::render2html()
 #' @keywords internal
 #' @name S3_rlm
 #' @importFrom ecip desc_
@@ -27,33 +31,19 @@ desc_.rlm <- function(x) 'robust linear regression'
 }
 
 #' @rdname S3_rlm
-#' @importFrom utils packageDate
 #' @importFrom ecip .pval
 #' @method .pval summary.rlm
 #' @export .pval.summary.rlm
 #' @export
 .pval.summary.rlm <- function(x) {
   cf <- x$coefficients
-  dt <- packageDate(pkg = 'MASS')
-  if (dt == as.Date('2025-02-19')) stop('MASS:::summary.rlm does not carry p-value(s)')
-  stop('check if new version of MASS:::summary.rlm carry p-value(s)')
+  stop('MASS:::summary.rlm does not carry p-value(s)')
 }
 
 
 
-#' @title R Markdown Lines for \link[MASS]{rlm}
-#' 
-#' @param x,xnm,... ..
-#' 
-#' @examples
-#' library(ecip); list(
-#'  '`rlm`' = rlm(stack.loss ~ ., data = stackloss)
-#' ) |> fastmd::render2html()
-#' 
-#' @keywords internal
 #' @importFrom fastmd md_
 #' @importFrom ecip md_ecip
-#' @export md_.rlm
 #' @export
 md_.rlm <- md_ecip
 

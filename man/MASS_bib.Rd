@@ -3,14 +3,14 @@
 \name{MASS_bib}
 \alias{MASS_bib}
 \alias{.akaike74}
-\title{\link[utils]{bibentry} for \CRANpkg{MASS}}
+\title{\link[utils]{bibentry} for Package \CRANpkg{MASS}}
 \usage{
 .akaike74(key = "Akaike74", ...)
 }
 \arguments{
-\item{key, ...}{\link[utils]{bibentry}}
+\item{key, ...}{parameters of the function \link[utils]{bibentry}}
 }
 \description{
-\link[utils]{bibentry} for \CRANpkg{MASS}
+Bibliography entries for package \CRANpkg{MASS}.
 }
 \keyword{internal}

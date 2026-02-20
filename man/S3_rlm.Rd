@@ -19,4 +19,9 @@
 \description{
 S3 methods for \link[MASS]{rlm}
 }
+\examples{
+library(ecip); list(
+ '`rlm`' = rlm(stack.loss ~ ., data = stackloss)
+) |> fastmd::render2html()
+}
 \keyword{internal}

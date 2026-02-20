@@ -1,11 +1,14 @@
 
-#' @title \link[utils]{bibentry} for \CRANpkg{MASS}
+#' @title \link[utils]{bibentry} for Package \CRANpkg{MASS}
 #' 
-#' @param key,... \link[utils]{bibentry}
+#' @description
+#' Bibliography entries for package \CRANpkg{MASS}.
+#' 
+#' 
+#' @param key,... parameters of the function \link[utils]{bibentry}
 #' 
 #' @keywords internal
 #' @name MASS_bib
-#' @importFrom utils bibentry person
 #' @export
 .akaike74 <- \(key = 'Akaike74', ...) {
   bibentry(
