@@ -85,14 +85,14 @@ as.univar.formula <- function(formula, envir = parent.frame(), ...) {
 #' @examples
 #' # see ?md_
 #' @importFrom ecip isIntercept .pval
-#' @importFrom parallel mclapply
+#' @importFrom parallel detectCores mclapply
 #' @method as.univar default
 #' @export as.univar.default
 #' @export
 as.univar.default <- function(
     object,
     ..., 
-    mc.cores = getOption('mc.cores')
+    mc.cores = detectCores()
 ) {
   
   ret <- object |> 

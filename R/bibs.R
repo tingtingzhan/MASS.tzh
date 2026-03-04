@@ -4,7 +4,6 @@
 #' @description
 #' Bibliography entries for package \CRANpkg{MASS}.
 #' 
-#' 
 #' @param key,... parameters of the function \link[utils]{bibentry}
 #' 
 #' @keywords internal

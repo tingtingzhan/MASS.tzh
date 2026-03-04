@@ -10,9 +10,9 @@
 #' 
 #' @examples
 #' glm(Days ~ ., family = poisson, data = MASS::quine) |>
-#'  check_over_dispersion() |> 
-#'  stepAIC_complete()
+#'  check_over_dispersion()
 #' 
+#' @keywords internal
 #' @importFrom AER dispersiontest
 #' @export
 check_over_dispersion <- function(model, ...) {

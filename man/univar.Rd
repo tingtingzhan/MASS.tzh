@@ -14,7 +14,7 @@ as.univar(object, ...)
 
 \method{as.univar}{formula}(formula, envir = parent.frame(), ...)
 
-\method{as.univar}{default}(object, ..., mc.cores = getOption("mc.cores"))
+\method{as.univar}{default}(object, ..., mc.cores = detectCores())
 }
 \arguments{
 \item{object}{see \strong{Usage}}
