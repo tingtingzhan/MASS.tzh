@@ -128,7 +128,7 @@ as.univar.default <- function(
 
 
 
-#' @importFrom ecip ecip as.matrix.ecip intercept_rm.ecip
+#' @importFrom ecip ecip as.matrix.ecip intercept_rm
 #' @export
 as.matrix.univar <- function(x, ...) {
   # !! needed when combining `univar` and `multivar`
@@ -137,7 +137,7 @@ as.matrix.univar <- function(x, ...) {
     lapply(FUN = \(i) {
       i |>
         ecip() |>
-        intercept_rm.ecip() |>
+        intercept_rm() |> # ecip:::intercept_rm.ecip()
         as.matrix.ecip(type = 'p_samplesize')
     })
   

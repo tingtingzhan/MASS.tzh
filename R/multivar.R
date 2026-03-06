@@ -69,7 +69,7 @@ as.multivar <- function(x, ...) {
 #' @importFrom flextable as_flextable color
 #' @importFrom fastmd as_flextable.matrix
 #' @importFrom fastmd label_pvalue_sym
-#' @importFrom ecip intercept_rm.matrix
+#' @importFrom ecip intercept_rm
 #' @export as_flextable.multivar
 #' @export
 as_flextable.multivar <- function(x, ...) {
@@ -99,12 +99,12 @@ as_flextable.multivar <- function(x, ...) {
   m <- if (inherits(x, what = 'stepAIC')) {
     x |>
       as.matrix.stepAIC() |>
-      intercept_rm.matrix()
+      intercept_rm() # ecip:::intercept_rm.matrix()
   } else { 
     x0 |> 
       ecip() |>
       as.matrix.ecip(type = 'ncol1') |>
-      intercept_rm.matrix()
+      intercept_rm() # ecip:::intercept_rm.matrix()
   }
   
   ret <- cbind(u, 
