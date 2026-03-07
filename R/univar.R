@@ -162,7 +162,6 @@ as.matrix.univar <- function(x, ...) {
 #' 
 #' @keywords internal  
 #' @importFrom flextable as_flextable
-#' @importFrom fastmd as_flextable.matrix
 #' @export as_flextable.univar
 #' @export
 as_flextable.univar <- function(x, ...) {
@@ -170,7 +169,7 @@ as_flextable.univar <- function(x, ...) {
     as.matrix.univar()
   
   y |> 
-    as_flextable.matrix(
+    as_flextable( # fastmd:::as_flextable.matrix
       row.title = deparse1(endpoint(x[[1L]])),
       hline_i = y |> attr(which = 'nrow', exact = TRUE) |> cumsum()
     )

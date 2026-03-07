@@ -67,7 +67,6 @@ as.multivar <- function(x, ...) {
 #' 
 #' @keywords internal 
 #' @importFrom flextable as_flextable color
-#' @importFrom fastmd as_flextable.matrix
 #' @importFrom fastmd label_pvalue_sym
 #' @importFrom ecip intercept_rm
 #' @export as_flextable.multivar
@@ -115,7 +114,7 @@ as_flextable.multivar <- function(x, ...) {
   colnames(ret)[1L] <- paste('(Univariable)', colnames(ret)[1L], sep = '\n')
   
   ret |>
-    as_flextable.matrix(
+    as_flextable( # fastmd:::as_flextable.matrix
       row.title = if (is_stepAIC) {
         ecip(x[[length(x)]])@endpoint
       } else ecip(x0)@endpoint,

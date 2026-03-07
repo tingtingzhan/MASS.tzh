@@ -220,7 +220,6 @@ as.matrix.stepAIC <- function(x, ...) {
 #' 
 #' @keywords internal
 #' @importFrom flextable as_flextable color
-#' @importFrom fastmd as_flextable.matrix
 #' @export as_flextable.stepAIC
 #' @export
 as_flextable.stepAIC <- function(
@@ -232,7 +231,7 @@ as_flextable.stepAIC <- function(
 ) {
   z <- as.matrix.stepAIC(x, ...)
   z |>
-    as_flextable.matrix(
+    as_flextable( # fastmd:::as_flextable.matrix
       row.title = row.title,
       hline_i = hline_i
     ) |>
