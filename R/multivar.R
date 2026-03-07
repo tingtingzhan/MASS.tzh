@@ -5,6 +5,24 @@
 #' 
 #' @param ... parameters of [subset.univar()]
 #' 
+#' @examples
+#' library(lme4.tzh)
+#' library(HSAUR3)
+#' library(ordinal)
+#' m1 = lm(mpg ~ cyl + am + hp + wt + qsec + drat + disp, data = ecip::mtc)
+#' m2 = glmer(outcome ~ treatment + visit + (1|patientID), data = toenail,
+#'   family = binomial, nAGQ = 20)
+#' m3 = clmm(SURENESS ~ PROD + SOUPTYPE + (1|RESP) + (1|RESP:PROD), data = soup,
+#'  link = 'probit', threshold = 'equidistant')
+#'   
+#' library(ecip); list(
+#'  'univar, `lm`' = m1 |> as.univar(),
+#'  'multivar, `lm`' = m1 |> as.univar() |> as.multivar(subset = min_pvalue < .1),
+#'  'multivar, `merMod`' = m2 |> as.univar() |> as.multivar(subset = min_pvalue < .1)# ,
+#'  # 'multivar, `clmm`' = m3 |> as.univar() |> as.multivar(subset = min_pvalue < .1)# still bug
+#' ) |> fastmd::render2html()
+#' 
+#' 
 #' @keywords internal
 #' @importFrom ecip vterms
 #' @aliases multivar
@@ -57,19 +75,9 @@ as.multivar <- function(x, ...) {
 
 
 
-#' @title as_flextable.multivar
-#' 
-#' @description ..
-#'  
-#' @param x [multivar] object
-#' 
-#' @param ... additional parameters, currently of no use
-#' 
-#' @keywords internal 
 #' @importFrom flextable as_flextable color
 #' @importFrom fastmd label_pvalue_sym
 #' @importFrom ecip intercept_rm
-#' @export as_flextable.multivar
 #' @export
 as_flextable.multivar <- function(x, ...) {
   
@@ -141,26 +149,15 @@ print.multivar <- function(x, ...) {
 
 
 
-#' @title Additional S3 methods for `multivar`
-#' 
-#' @param x `multivar`
-#' 
-#' @name S3_multivar
-#' @keywords internal
 #' @importFrom ecip endpoint
-#' @export endpoint.multivar
 #' @export
 endpoint.multivar <- function(x) (x[[length(x)]]) |> endpoint()
 
-#' @rdname S3_multivar
 #' @importFrom ecip nobsText
-#' @export nobsText.multivar
 #' @export
 nobsText.multivar <- function(x) (x[[length(x)]]) |> nobsText()
 
-#' @rdname S3_multivar
 #' @importFrom ecip desc_
-#' @export desc_.multivar
 #' @export
 desc_.multivar <- function(x) (x[[length(x)]]) |> desc_()
 
@@ -168,66 +165,29 @@ desc_.multivar <- function(x) (x[[length(x)]]) |> desc_()
 
 
 
-#' @title Model Description of [multivar] Object
-#' 
-#' @description ..
-#' 
-#' @param x a [multivar] object
-#' 
-#' @param xnm ..
-#' 
-#' @param ... ..
-#' 
-#' @examples
-#' library(lme4.tzh)
-#' library(HSAUR3)
-#' library(ordinal)
-#' m1 = lm(mpg ~ cyl + am + hp + wt + qsec + drat + disp, data = ecip::mtc)
-#' m2 = glmer(outcome ~ treatment + visit + (1|patientID), data = toenail,
-#'   family = binomial, nAGQ = 20)
-#' m3 = clmm(SURENESS ~ PROD + SOUPTYPE + (1|RESP) + (1|RESP:PROD), data = soup,
-#'  link = 'probit', threshold = 'equidistant')
-#'   
-#' library(ecip); list(
-#'  'univar, `lm`' = m1 |> as.univar(),
-#'  'multivar, `lm`' = m1 |> as.univar() |> as.multivar(subset = min_pvalue < .1),
-#'  'multivar, `merMod`' = m2 |> as.univar() |> as.multivar(subset = min_pvalue < .1)# ,
-#'  # 'multivar, `clmm`' = m3 |> as.univar() |> as.multivar(subset = min_pvalue < .1)# still bug
-#' ) |> fastmd::render2html()
-#' @keywords internal
 #' @importFrom fastmd md_ md_flextable_ fromPackage pkg_text
 #' @importClassesFrom fastmd md_lines
-#' @export md_.multivar
 #' @export
 md_.multivar <- function(x, xnm, ...) {
   
   u <- x |> 
     attr(which = 'univar', exact = TRUE)
   
-  v <- u |>
-    vapply(FUN = \(i) deparse1(vterms(i)[[2L]]), FUN.VALUE = '')
-  
   pkg <- u[[1L]] |> fromPackage()
   
   z1 <- sprintf(
-    fmt = 'The relationship between **`%s`** and %s is analyzed based on %s by first fitting univariable *%s* models due to the limited sample size, denegerated experimental design and/or substantial missingness across the predictors, using %s.',
+    fmt = 'The endpoint **`%s`** is analyzed based on %s by first fitting univariable *%s* models to all potential predictors due to the limited sample size, denegerated experimental design and/or substantial missingness across the predictors, using %s.  Next, the univariable predictor(s) with $p$-value<%.2f are considered for the multivariable model. Lastly, a backward stepwise variable selection by [Akaike information criterion (AIC)](https://en.wikipedia.org/wiki/Akaike_information_criterion) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>.',
     x |> endpoint() |> deparse1(),
-    paste0('`', v, '`', collapse = ', '),
     nobsText(x),
     desc_(x),
-    pkg |> pkg_text()
-  ) |>
-    new(Class = 'md_lines', package = pkg)
-  
-  z2 <- sprintf(
-    fmt = 'Next, univariable predictor(s) with $p$-value<%.2f are considered for the multivariable model. Lastly, a backward stepwise variable selection by [Akaike information criterion (AIC)](https://en.wikipedia.org/wiki/Akaike_information_criterion) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>.',
+    pkg |> pkg_text(),
     x |> attr(which = 'p_thres', exact = TRUE)
   ) |>
-    new(Class = 'md_lines', package = 'MASS')
+    new(Class = 'md_lines', package = c(pkg, 'MASS'))
   
-  z3 <- md_flextable_(xnm = xnm, ...)
+  z2 <- md_flextable_(xnm = xnm, ...)
   
-  c(z1, z2, z3) # fastmd::c.md_lines
+  c(z1, z2) # fastmd::c.md_lines
   
 }
 
