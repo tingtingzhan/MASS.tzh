@@ -149,20 +149,7 @@ as.matrix.univar <- function(x, ...) {
 
 
 
-#' @title Convert [univar] Object to \link[flextable]{flextable}
-#' 
-#' @description ..
-#'  
-#' @param x [univar] object
-#' 
-#' @param ... additional parameters, currently of no use
-#' 
-#' @returns 
-#' Function [as_flextable.univar()] returns a \link[flextable]{flextable}.
-#' 
-#' @keywords internal  
 #' @importFrom flextable as_flextable
-#' @export as_flextable.univar
 #' @export
 as_flextable.univar <- function(x, ...) {
   y <- x |> 
@@ -175,9 +162,6 @@ as_flextable.univar <- function(x, ...) {
     )
 }
 
-#' @importFrom fastmd md_ md_flextable_
-#' @export
-md_.univar <- md_flextable_
 
 
 #' @export
