@@ -40,9 +40,9 @@ m |> stepAIC_complete()
 lm(Temp ~ Solar.R + Wind, data = airquality) |>
  stepAIC_complete(upper = ~ Ozone) # not necessarily the same!
  
-library(lme4.tzh); library(HSAUR3)
-?lme4::glmer
-gm2 = glmer(outcome ~ treatment*visit + (1|patientID), data=toenail, family=binomial,nAGQ=20)
+library(ranef.tzh)
+gm2 = lme4::glmer(outcome ~ treatment*visit + (1|patientID), 
+ data = lme4::toenail, family = binomial, nAGQ = 20)
 gm2 |> stepAIC_complete()
 
 library(ecip); list(

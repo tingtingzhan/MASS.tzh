@@ -16,11 +16,10 @@ as.multivar(x, ...)
 as.multivar
 }
 \examples{
-library(lme4.tzh)
-library(HSAUR3)
+library(ranef.tzh)
 library(ordinal)
 m1 = lm(mpg ~ cyl + am + hp + wt + qsec + drat + disp, data = ecip::mtc)
-m2 = glmer(outcome ~ treatment + visit + (1|patientID), data = toenail,
+m2 = lme4::glmer(outcome ~ treatment + visit + (1|patientID), data = lme4::toenail,
   family = binomial, nAGQ = 20)
 m3 = clmm(SURENESS ~ PROD + SOUPTYPE + (1|RESP) + (1|RESP:PROD), data = soup,
  link = 'probit', threshold = 'equidistant')

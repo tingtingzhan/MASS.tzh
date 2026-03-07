@@ -27,9 +27,8 @@ Stepwise variable selection by AIC, for S4 regression object (e.g. \link[lme4]{g
 Function \code{\link[=stepAIC4]{stepAIC4()}} is copied from \link[MASS]{stepAIC}, with as little change as possible.
 }
 \examples{
-library(lme4); library(HSAUR3)
-?lme4::glmer
-gm2 = glmer(outcome ~ treatment*visit + (1|patientID), data=toenail, family=binomial,nAGQ=20)
+gm2 = lme4::glmer(outcome ~ treatment*visit + (1|patientID), 
+ data = lme4::toenail, family = binomial, nAGQ = 20)
 gm2 |> stepAIC4(direction = 'backward')
 }
 \keyword{internal}

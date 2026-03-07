@@ -15,5 +15,5 @@ License: GPL-2
 Depends: R (>= 4.5), MASS (== 7.3.65)
 Imports: parallel, methods, AER (== 1.2.16), sfsmisc (== 1.1.23), flextable (== 0.9.11), 
     fastmd, ecip
-Suggests: HSAUR3 (== 1.0.15), ordinal (== 2025.12.29), lme4 (== 1.1.38),
-    lme4.tzh
+Suggests: ordinal (== 2025.12.29), lme4 (== 1.1.38),
+    ranef.tzh
