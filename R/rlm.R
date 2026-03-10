@@ -11,9 +11,13 @@ NULL
 
 
 #' @importFrom ecip desc_
+#' @importClassesFrom fastmd md_lines
 #' @export
-desc_.rlm <- function(x) 'robust linear regression'
-
+desc_.rlm <- function(x) {
+  'robust linear regression' |>
+    sprintf(fmt = '*%s*') |>
+    new(Class = 'md_lines', package = 'MASS')
+}
 
 # must!!
 # ?lmtest::coeftest will dispatch to ?lmtest::coeftest.default

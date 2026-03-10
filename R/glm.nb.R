@@ -28,9 +28,12 @@ getCanonicalLink.negbin <- function(x) {
 
 
 #' @importFrom ecip desc_
+#' @importClassesFrom fastmd md_lines
 #' @export
 desc_.negbin <- function(x) {
-  'negative binomial generalized linear regression'
+  'negative binomial generalized linear regression' |>
+    sprintf(fmt = '*%s*') |>
+    new(Class = 'md_lines', package = 'MASS')
 }
 
 

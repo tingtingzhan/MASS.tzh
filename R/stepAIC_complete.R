@@ -253,7 +253,7 @@ as_flextable.stepAIC <- function(
 #' @param x,xnm,... ..
 #' 
 #' @keywords internal
-#' @importFrom fastmd md_ md_flextable_
+#' @importFrom fastmd md_ md_int
 #' @importClassesFrom fastmd md_lines
 #' @importFrom ecip md_regression_
 #' @export md_.stepAIC
@@ -266,7 +266,7 @@ md_.stepAIC <- function(x, xnm, ...) {
   z2 <- x |>
     md_stepAIC_int() 
   
-  z3 <- md_flextable_(xnm = xnm, ...)
+  z3 <- md_int(x = x, xnm = xnm, engine = 'flextable', ...)
   
   c(z1, z2, z3) # ?fastmd::c.md_lines
   

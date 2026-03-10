@@ -23,9 +23,13 @@ getLink.polr <- function(x) x$method
 
 
 #' @importFrom ecip desc_
+#' @importClassesFrom fastmd md_lines
 #' @export
 desc_.polr <- function(x) {
-  paste('ordered', x$method, 'regression')
+  x$method |>
+    sprintf(fmt = 'ordered %s regression') |>
+    sprintf(fmt = '*%s*') |>
+    new(Class = 'md_lines', package = 'MASS')
 }
 
 

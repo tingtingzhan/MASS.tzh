@@ -158,13 +158,16 @@ nobsText.multivar <- function(x) (x[[length(x)]]) |> nobsText()
 
 #' @importFrom ecip desc_
 #' @export
-desc_.multivar <- function(x) (x[[length(x)]]) |> desc_()
+desc_.multivar <- function(x) {
+  (x[[length(x)]]) |> 
+    desc_()
+}
 
 
 
 
 
-#' @importFrom fastmd md_ md_flextable_ fromPackage pkg_text
+#' @importFrom fastmd md_ md_int fromPackage pkg_text
 #' @importClassesFrom fastmd md_lines
 #' @export
 md_.multivar <- function(x, xnm, ...) {
@@ -184,7 +187,7 @@ md_.multivar <- function(x, xnm, ...) {
   ) |>
     new(Class = 'md_lines', package = c(pkg, 'MASS'))
   
-  z2 <- md_flextable_(xnm = xnm, ...)
+  z2 <- md_int(x = x, xnm = xnm, engine = 'flextable', ...)
   
   c(z1, z2) # fastmd::c.md_lines
   
