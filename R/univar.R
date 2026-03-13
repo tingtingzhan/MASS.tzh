@@ -62,7 +62,7 @@ as.univar.terms <- function(object, envir = parent.frame(), ...) {
 #' @param formula \link[stats]{formula}
 #' 
 #' @details
-#' Function [as.univar.formula()] and [as.univar.terms()] return a \link[base]{list} of \link[stats]{formula}s.
+#' The function [as.univar.formula()] and [as.univar.terms()] return a \link[base]{list} of \link[stats]{formula}s.
 #' 
 #' @keywords internal
 #' @method as.univar formula
@@ -80,7 +80,7 @@ as.univar.formula <- function(formula, envir = parent.frame(), ...) {
 #' @rdname univar
 #' 
 #' @details
-#' Function [as.univar.default()] returns a \link[stats]{listof} regression models.
+#' The function [as.univar.default()] returns a \link[stats]{listof} regression models.
 #' 
 #' @examples
 #' # see ?md_

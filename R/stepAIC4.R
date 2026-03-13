@@ -7,7 +7,7 @@
 #' @param object,scope,scale,direction,trace,keep,steps,use.start,k,... see explanation in function \link[MASS]{stepAIC}.
 #' 
 #' @note
-#' Function [stepAIC4()] is copied from \link[MASS]{stepAIC}, with as little change as possible.
+#' The function [stepAIC4()] is copied from \link[MASS]{stepAIC}, with as little change as possible.
 #' 
 #' @examples
 #' gm2 = lme4::glmer(outcome ~ treatment*visit + (1|patientID), 

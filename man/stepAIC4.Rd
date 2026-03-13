@@ -24,7 +24,7 @@ stepAIC4(
 Stepwise variable selection by AIC, for S4 regression object (e.g. \link[lme4]{glmer}).
 }
 \note{
-Function \code{\link[=stepAIC4]{stepAIC4()}} is copied from \link[MASS]{stepAIC}, with as little change as possible.
+The function \code{\link[=stepAIC4]{stepAIC4()}} is copied from \link[MASS]{stepAIC}, with as little change as possible.
 }
 \examples{
 gm2 = lme4::glmer(outcome ~ treatment*visit + (1|patientID), 

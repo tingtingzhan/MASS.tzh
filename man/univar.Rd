@@ -34,9 +34,9 @@ in the same \link[base]{environment} as the input}
 Convert into Multiple Univariable Structures
 }
 \details{
-Function \code{\link[=as.univar.formula]{as.univar.formula()}} and \code{\link[=as.univar.terms]{as.univar.terms()}} return a \link[base]{list} of \link[stats]{formula}s.
+The function \code{\link[=as.univar.formula]{as.univar.formula()}} and \code{\link[=as.univar.terms]{as.univar.terms()}} return a \link[base]{list} of \link[stats]{formula}s.
 
-Function \code{\link[=as.univar.default]{as.univar.default()}} returns a \link[stats]{listof} regression models.
+The function \code{\link[=as.univar.default]{as.univar.default()}} returns a \link[stats]{listof} regression models.
 }
 \examples{
 as.univar(y ~ x1 + I(x2^2))

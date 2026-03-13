@@ -21,25 +21,23 @@
 #' 
 #' 
 #' @note
-#' Function \link[MASS]{stepAIC} (as of 2025-02-19) ??? does not have a parameter for the end user to specify the
+#' The function \link[MASS]{stepAIC} (as of 2025-02-19) ??? does not have a parameter for the end user to specify the
 #' threshold of AIC improvement, that should be regarded as an improvement.
 #' Instead, this quantity is hard coded (in `if (bAIC >= AIC + 1e-07) break`).
 #' 
-#' Function \link[MASS]{stepAIC} (as of 2025-02-19) is hard coded for S3 regression object (e.g., `object$formula <- Terms`).
+#' The function \link[MASS]{stepAIC} (as of 2025-02-19) is hard coded for S3 regression object (e.g., `object$formula <- Terms`).
 #' 
 #' @examples 
 #' library(MASS)
 #' airquality |> sapply(FUN = \(i) mean(is.na(i))) # missingness in `Ozone` and `Solar.R`
 #' summary(m <- lm(Temp ~ Ozone + Solar.R + Wind, data = airquality))
 #' tryCatch(m |> stepAIC(trace = FALSE), error = identity)
-#' m |> stepAIC_complete()
 #' lm(Temp ~ Solar.R + Wind, data = airquality) |>
 #'  stepAIC_complete(upper = ~ Ozone) # not necessarily the same!
 #'  
 #' library(ranef.tzh)
 #' gm2 = lme4::glmer(outcome ~ treatment*visit + (1|patientID), 
 #'  data = lme4::toenail, family = binomial, nAGQ = 20)
-#' gm2 |> stepAIC_complete()
 #' 
 #' library(ecip); list(
 #'  'lm' = m |> stepAIC_complete(),
@@ -210,17 +208,9 @@ as.matrix.stepAIC <- function(x, ...) {
 
 
 
-#' @title Turn \link[MASS.tzh]{stepAIC_complete} Return to \link[flextable]{flextable}
-#' 
-#' @param x returned value of function \link[MASS.tzh]{stepAIC_complete}
-#' 
-#' @param row.title,hline_i,vline_j ..
-#' 
-#' @param ... ..
-#' 
-#' @keywords internal
+# @param x returned value of function \link[MASS.tzh]{stepAIC_complete}
 #' @importFrom flextable as_flextable color
-#' @export as_flextable.stepAIC
+#' @importFrom ftExtra colformat_md as_paragraph_md
 #' @export
 as_flextable.stepAIC <- function(
     x, 
@@ -239,7 +229,9 @@ as_flextable.stepAIC <- function(
     add_footer_lines(values = c(
       '\u274c: predictor(s) removed by stepwise algorithm.',
       '\U1f6ab: predictor(s) not considered in the model.'
-    ))
+    )) |>
+    add_footer_lines(values = desc_(x[[1L]]) |> as_paragraph_md()) |>
+    colformat_md(part = 'all')
 }
 
 
@@ -248,61 +240,24 @@ as_flextable.stepAIC <- function(
 
 
 
-#' @title R Markdown Lines for `stepAIC`
-#' 
-#' @param x,xnm,... ..
-#' 
-#' @keywords internal
 #' @importFrom fastmd md_ md_int
 #' @importClassesFrom fastmd md_lines
-#' @importFrom ecip md_regression_
-#' @export md_.stepAIC
 #' @export
 md_.stepAIC <- function(x, xnm, ...) {
   
-  z1 <- x[[length(x)]] |> 
-    md_regression_()
-  
-  z2 <- x |>
-    md_stepAIC_int() 
-  
-  z3 <- md_int(x = x, xnm = xnm, engine = 'flextable', ...)
-  
-  c(z1, z2, z3) # ?fastmd::c.md_lines
-  
-}
-
-
-
-
-md_stepAIC_int <- \(x) {
-  
-  upper <- x |> attr(which = 'upper', exact = TRUE)
-  
-  tmp <- x[[1L]] |> 
-    terms() |> 
-    attr(which = 'variables', exact = TRUE) |> 
-    as.list.default() |>
-    vapply(FUN = deparse1, FUN.VALUE = '')
-    
-  z1 <- sprintf(
-    fmt = 'The initial model started with predictors %s, then followed by a %s stepwise variable selection by [@Akaike74 information criterion (AIC)](https://en.wikipedia.org/wiki/Akaike_information_criterion) performed using <u>**`R`**</u> package <u>**`MASS`**</u>. ',
-    paste0('`', tmp[-(1:2)], '`', collapse = ', '),
-    if (length(upper)) {
-      'backward-forward'
-    } else 'backward'
-  ) |> 
+  z1 <- x |> 
+    attr(which = 'upper', exact = TRUE) |>
+    length() |>
+    ifelse(test = _, yes = 'Backward-forward', no = 'Backward') |>
+    sprintf(
+      fmt = '%s stepwise variable selection by [@Akaike74 information criterion (AIC)](https://en.wikipedia.org/wiki/Akaike_information_criterion) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>.'
+    ) |> 
     new(Class = 'md_lines', bibentry = .akaike74())
   
-  z2 <- if (length(upper)) {
-    sprintf(
-      fmt = 'Additional predictor(s) considered in the subsequent forward stepwise selection were %s.',
-      paste0('`', all.vars(upper[[2L]]), '`', collapse = ', ')
-    ) |>
-      new(Class = 'md_lines')
-  } # else MULL
+  z2 <- md_int(x = x, xnm = xnm, engine = 'flextable', ...)
   
-  c(z1, z2) # fastmd::c.md_lines
+  c(z1, z2) # ?fastmd::c.md_lines
   
 }
+
 
