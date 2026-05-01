@@ -8,7 +8,14 @@
 #' @examples
 #' library(ranef.tzh)
 #' library(ordinal)
-#' m1 = lm(mpg ~ cyl + am + hp + wt + qsec + drat + disp, data = ecip::mtc)
+#' m1 = datasets::mtcars |> 
+#'  within.data.frame(expr = {
+#'   cyl = factor(cyl)
+#'   gear = factor(gear)
+#'   vs = ifelse(as.logical(vs), yes = 'straight', no = 'V-shaped')
+#'   am = ifelse(as.logical(am), yes = 'manual', no = 'automatic')
+#'  }) |>
+#'  lm(mpg ~ cyl + am + hp + wt + qsec + drat + disp, data = _)
 #' m2 = lme4::glmer(outcome ~ treatment + visit + (1|patientID), data = lme4::toenail,
 #'   family = binomial, nAGQ = 20)
 #' m3 = clmm(SURENESS ~ PROD + SOUPTYPE + (1|RESP) + (1|RESP:PROD), data = soup,
