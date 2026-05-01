@@ -8,8 +8,6 @@ Authors@R: c(person(given = 'Tingting', family = 'Zhan',
       'tingtingzhan@gmail.com', comment = c(ORCID =
       '0000-0001-9971-4844')))
 Language: en-US
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 Encoding: UTF-8
 License: GPL-2
 Depends: R (>= 4.5), MASS (== 7.3.65)
@@ -17,3 +15,5 @@ Imports: parallel, methods, AER (== 1.2.16), sfsmisc (== 1.1.23), flextable (== 
     fastmd, ecip
 Suggests: ordinal (== 2025.12.29), lme4 (== 1.1.38),
     ranef.tzh
+Config/roxygen2/version: 8.0.0
+Config/roxygen2/markdown: TRUE
