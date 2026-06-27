@@ -241,7 +241,7 @@ as_flextable.stepAIC <- function(
 
 
 #' @importFrom fastmd md_ md_int
-#' @importClassesFrom fastmd md_lines
+#' @importClassesFrom fastmd md
 #' @export
 md_.stepAIC <- function(x, xnm, ...) {
   
@@ -252,11 +252,11 @@ md_.stepAIC <- function(x, xnm, ...) {
     sprintf(
       fmt = '%s stepwise variable selection by [@Akaike74 information criterion (AIC)](https://en.wikipedia.org/wiki/Akaike_information_criterion) is performed using <u>**`R`**</u> package <u>**`MASS`**</u>.'
     ) |> 
-    new(Class = 'md_lines', bibentry = .akaike74())
+    new(Class = 'md', bibentry = .akaike74())
   
   z2 <- md_int(x = x, xnm = xnm, engine = 'flextable', ...)
   
-  c(z1, z2) # ?fastmd::c.md_lines
+  c(z1, z2) # ?fastmd::c.md
   
 }
 

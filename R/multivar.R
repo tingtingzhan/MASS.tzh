@@ -175,7 +175,7 @@ desc_.multivar <- function(x) {
 
 
 #' @importFrom fastmd md_ md_int fromPackage pkg_text
-#' @importClassesFrom fastmd md_lines
+#' @importClassesFrom fastmd md
 #' @export
 md_.multivar <- function(x, xnm, ...) {
   
@@ -192,11 +192,11 @@ md_.multivar <- function(x, xnm, ...) {
     pkg |> pkg_text(),
     x |> attr(which = 'p_thres', exact = TRUE)
   ) |>
-    new(Class = 'md_lines', package = c(pkg, 'MASS'))
+    new(Class = 'md', package = c(pkg, 'MASS'))
   
   z2 <- md_int(x = x, xnm = xnm, engine = 'flextable', ...)
   
-  c(z1, z2) # fastmd::c.md_lines
+  c(z1, z2) # fastmd::c.md
   
 }
 

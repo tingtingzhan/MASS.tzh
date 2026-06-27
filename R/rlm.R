@@ -11,12 +11,12 @@ NULL
 
 
 #' @importFrom ecip desc_
-#' @importClassesFrom fastmd md_lines
+#' @importClassesFrom fastmd md
 #' @export
 desc_.rlm <- function(x) {
   'robust linear regression' |>
     sprintf(fmt = '*%s*') |>
-    new(Class = 'md_lines', package = 'MASS')
+    new(Class = 'md', package = 'MASS')
 }
 
 # must!!
