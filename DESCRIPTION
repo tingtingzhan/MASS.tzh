@@ -2,6 +2,7 @@ Package: MASS.tzh
 Type: Package
 Title: MASS.tzh
 Version: 0.1.0
+Date: 2026-07-07
 Description: Need to think more..
 Authors@R: c(person(given = 'Tingting', family = 'Zhan',
       role = c('aut', 'cre'), email =
@@ -11,7 +12,7 @@ Language: en-US
 Encoding: UTF-8
 License: GPL-2
 Depends: R (>= 4.6), MASS (== 7.3.65)
-Imports: parallel, methods, AER (== 1.2.16), sfsmisc (== 1.1.24), flextable (== 0.9.12), ftExtra (== 0.6.4), 
+Imports: parallel, methods, AER (== 1.2.16), sfsmisc (== 1.1.24), flextable (== 0.10.0), ftExtra (== 0.6.4), 
     fastmd, ecip
 Suggests: ordinal, lme4, ranef.tzh
 Config/roxygen2/version: 8.0.0
