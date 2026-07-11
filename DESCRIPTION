@@ -12,7 +12,7 @@ Language: en-US
 Encoding: UTF-8
 License: GPL-2
 Depends: R (>= 4.6), MASS (== 7.3.65)
-Imports: parallel, methods, AER (== 1.2.16), sfsmisc (== 1.1.24), flextable (== 0.10.0), ftExtra (== 0.6.4), 
+Imports: parallel, methods, AER (== 1.2.17), sfsmisc (== 1.1.24), flextable (== 0.10.0), ftExtra (== 0.6.4), 
     fastmd, ecip
 Suggests: ordinal, lme4, ranef.tzh
 Config/roxygen2/version: 8.0.0
