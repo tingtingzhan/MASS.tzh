@@ -2,7 +2,7 @@ Package: MASS.tzh
 Type: Package
 Title: MASS.tzh
 Version: 0.1.0
-Date: 2026-07-07
+Date: 2026-07-15
 Description: Need to think more..
 Authors@R: c(person(given = 'Tingting', family = 'Zhan',
       role = c('aut', 'cre'), email =
@@ -11,7 +11,7 @@ Authors@R: c(person(given = 'Tingting', family = 'Zhan',
 Language: en-US
 Encoding: UTF-8
 License: GPL-2
-Depends: R (>= 4.6), MASS (== 7.3.65)
+Depends: R (>= 4.6), MASS (== 7.3.66)
 Imports: parallel, methods, AER (== 1.2.17), sfsmisc (== 1.1.24), flextable (== 0.10.0), ftExtra (== 0.6.4), 
     fastmd, ecip
 Suggests: ordinal, lme4, ranef.tzh
